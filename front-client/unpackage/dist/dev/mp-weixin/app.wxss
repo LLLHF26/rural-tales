@@ -1,0 +1,17 @@
+
+	/*每个页面公共css */
+html, body, page { height: 100%; overflow: hidden;
+}
+view, scroll-view, image, text, input, button { box-sizing: border-box;
+}
+.ellipsis { overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.ellipsis-2 { overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+}
+.flex { display: flex; align-items: center;
+}
+.flex-between { display: flex; justify-content: space-between; align-items: center;
+}
+.flex-wrap { display: flex; flex-wrap: wrap;
+}
+page{--status-bar-height:25px;--top-window-height:0px;--window-top:0px;--window-bottom:0px;--window-left:0px;--window-right:0px;--window-magin:0px}[data-c-h="true"]{display: none !important;}

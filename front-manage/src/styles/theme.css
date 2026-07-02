@@ -1,0 +1,745 @@
+/* ================================================================
+   竹韵田园 · 淡绿色主题
+   设计理念：
+   - 竹青（Bamboo Green）主色：取自竹林新叶，清新而有生命力
+   - 新芽绿（Sprout）辅助：嫩芽初绽的明快感，呼应乡村文旅活力
+   - 茶白（Tea White）底色：清晨茶园薄雾的温柔光泽
+   - 竹墨（Bamboo Ink）深色：老竹沉淀的质感，用于侧边栏等深度区
+   - 竹节纹、叶脉纹理、露珠光效，营造"行走在竹林茶园"的沉浸感
+   ================================================================ */
+
+:root {
+  /* ========== 竹青色系（主色） ========== */
+  --bamboo-50:  #f2f8f3;
+  --bamboo-100: #e0f0e3;
+  --bamboo-200: #bce0c5;
+  --bamboo-300: #8fcc9d;
+  --bamboo-400: #6ab87b;
+  --bamboo-500: #5b8c5a;  /* 竹青 — 主色 */
+  --bamboo-600: #4a7a49;
+  --bamboo-700: #3d683c;
+  --bamboo-800: #325632;
+  --bamboo-900: #264528;
+
+  /* ========== 新芽色系（辅助亮色） ========== */
+  --sprout-50:  #f6fdf7;
+  --sprout-100: #e4f7e8;
+  --sprout-200: #c0efc8;
+  --sprout-300: #94e3a3;
+  --sprout-400: #7ec87b;  /* 新芽绿 */
+  --sprout-500: #5dad5c;
+  --sprout-600: #489448;
+  --sprout-700: #3a7a3c;
+
+  /* ========== 茶白色系（背景） ========== */
+  --tea-50:  #f8fbf6;  /* 茶白 — 主背景 */
+  --tea-100: #f4f9f2;
+  --tea-200: #ebf4e7;
+  --tea-300: #dcecd6;
+  --tea-400: #c8dfc0;
+  --tea-500: #accba3;
+
+  /* ========== 竹墨色系（文字/深色） ========== */
+  --ink-900: #1a2e1c;
+  --ink-800: #2d4a32;  /* 主文字 */
+  --ink-700: #3d5e3f;
+  --ink-600: #5a7a5c;  /* 次要文字 */
+  --ink-500: #7d9a7e;  /* 辅助文字 */
+  --ink-400: #a0b8a0;
+  --ink-300: #c4d4c4;
+
+  /* ========== 竹黄色系（暖色点缀） ========== */
+  --gold-50:  #fdf8f0;
+  --gold-100: #f9edda;
+  --gold-200: #f0d9ab;
+  --gold-300: #e3be73;
+  --gold-400: #c49a3c;  /* 竹黄 — 暖金 */
+  --gold-500: #a07a28;
+  --gold-600: #7d5e1a;
+
+  /* ========== 功能色 ========== */
+  --accent-red:       #d45151;
+  --accent-red-light: #fbecec;
+  --accent-teal:      #3a8a7d;
+  --accent-purple:    #7b5ea7;
+  --accent-blue:      #5b8aa0;
+
+  /* ========== 主题映射 ========== */
+  --color-primary:      var(--bamboo-500);
+  --color-primary-light: var(--bamboo-400);
+  --color-primary-dark:  var(--bamboo-600);
+  --color-primary-bg:    var(--bamboo-50);
+
+  --color-secondary:      var(--sprout-400);
+  --color-secondary-light: var(--sprout-300);
+  --color-secondary-dark:  var(--sprout-600);
+  --color-secondary-bg:    var(--sprout-50);
+
+  /* ========== 布局色 ========== */
+  --sidebar-bg:        linear-gradient(180deg, #1a3a24 0%, #15301e 40%, #0f2617 100%);
+  --sidebar-bg-solid:  #1a3a24;
+  --sidebar-text:      #b8d4bc;
+  --sidebar-active-text: #eaf7ec;
+  --sidebar-active-bg:   rgba(91, 140, 90, 0.3);
+  --sidebar-hover-bg:    rgba(91, 140, 90, 0.12);
+  --sidebar-divider:     rgba(184, 212, 188, 0.12);
+
+  --header-bg:     #ffffff;
+  --header-border: var(--tea-300);
+
+  --main-bg:       var(--tea-50);
+  --card-bg:       #ffffff;
+  --card-shadow:   0 2px 16px rgba(45, 74, 50, 0.06);
+  --card-radius:   10px;
+  --card-border:   1px solid var(--tea-200);
+
+  --text-primary:   var(--ink-800);
+  --text-secondary: var(--ink-600);
+  --text-muted:     var(--ink-500);
+  --text-placeholder: var(--ink-400);
+
+  --border-color: var(--tea-300);
+  --border-light: var(--tea-200);
+
+  --success-color: var(--sprout-500);
+  --warning-color: var(--gold-400);
+  --danger-color:  var(--accent-red);
+  --info-color:    var(--ink-500);
+
+  --content-padding: 20px;
+  --section-gap:     16px;
+}
+
+/* ================================================================
+   全局重置
+   ================================================================ */
+html, body, #app {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', 'Helvetica Neue', sans-serif;
+  color: var(--text-primary);
+  background: var(--main-bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--bamboo-600);
+  text-decoration: none;
+}
+a:hover {
+  color: var(--bamboo-500);
+}
+
+/* ================================================================
+   滚动条 — 竹节质感
+   ================================================================ */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--tea-100);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--tea-400);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--bamboo-300);
+}
+
+/* ================================================================
+   Element Plus 全局覆盖
+   设计理念：竹青为主，新芽为辅，茶白做底，竹墨为文
+   ================================================================ */
+
+/* ---- 按钮 ---- */
+/* 主按钮 — 竹青渐变，叶片般舒展 */
+.el-button--primary {
+  --el-button-bg-color: var(--bamboo-500);
+  --el-button-border-color: var(--bamboo-500);
+  --el-button-text-color: #fff;
+  --el-button-hover-bg-color: var(--bamboo-400);
+  --el-button-hover-border-color: var(--bamboo-400);
+  --el-button-hover-text-color: #fff;
+  --el-button-active-bg-color: var(--bamboo-600);
+  --el-button-active-border-color: var(--bamboo-600);
+  font-weight: 500;
+}
+/* 成功按钮 — 新芽绿 */
+.el-button--success {
+  --el-button-bg-color: var(--sprout-400);
+  --el-button-border-color: var(--sprout-400);
+  --el-button-hover-bg-color: var(--sprout-300);
+  --el-button-hover-border-color: var(--sprout-300);
+  --el-button-active-bg-color: var(--sprout-500);
+  --el-button-active-border-color: var(--sprout-500);
+}
+/* 警告按钮 — 竹黄暖金 */
+.el-button--warning {
+  --el-button-bg-color: var(--gold-400);
+  --el-button-border-color: var(--gold-400);
+  --el-button-hover-bg-color: var(--gold-300);
+  --el-button-hover-border-color: var(--gold-300);
+}
+/* 危险按钮 */
+.el-button--danger {
+  --el-button-bg-color: var(--accent-red);
+  --el-button-border-color: var(--accent-red);
+}
+
+/* 朴素按钮 hover */
+.el-button.is-plain {
+  --el-button-hover-text-color: var(--bamboo-500);
+  --el-button-hover-border-color: var(--bamboo-300);
+  --el-button-hover-bg-color: var(--bamboo-50);
+}
+
+/* ===== 导航菜单（侧边栏内）— 竹墨深处 ===== */
+.el-menu {
+  --el-menu-bg-color: transparent;
+  --el-menu-text-color: var(--sidebar-text);
+  --el-menu-hover-bg-color: var(--sidebar-hover-bg);
+  --el-menu-active-color: var(--sidebar-active-text);
+  --el-menu-item-height: 48px;
+  --el-menu-sub-item-height: 44px;
+  border-right: none !important;
+}
+.el-menu-item.is-active {
+  background: var(--sidebar-active-bg) !important;
+  color: var(--sprout-300) !important;
+  border-right: 3px solid var(--sprout-400) !important;
+}
+.el-menu-item:hover {
+  background: var(--sidebar-hover-bg) !important;
+  color: #d4ecd6 !important;
+}
+.el-sub-menu__title:hover {
+  background: var(--sidebar-hover-bg) !important;
+  color: #d4ecd6 !important;
+}
+.el-menu--collapse {
+  width: 64px;
+}
+
+/* ===== 表格 — 茶白底、竹青表头 ===== */
+.el-table {
+  --el-table-header-bg-color: var(--bamboo-50);
+  --el-table-header-text-color: var(--ink-800);
+  --el-table-row-hover-bg-color: var(--tea-50);
+  --el-table-border-color: var(--tea-200);
+  --el-table-text-color: var(--ink-700);
+  border-radius: var(--card-radius);
+  font-size: 14px;
+}
+.el-table th.el-table__cell {
+  font-weight: 600;
+  font-size: 13px;
+  border-bottom: 2px solid var(--bamboo-200) !important;
+}
+.el-table .el-table__row:hover > td.el-table__cell {
+  background-color: var(--tea-50) !important;
+}
+
+/* ===== 卡片 — 露珠光感 ===== */
+.el-card {
+  border-radius: var(--card-radius) !important;
+  box-shadow: var(--card-shadow) !important;
+  border: var(--card-border) !important;
+  background: var(--card-bg);
+}
+
+/* ===== 分页 ===== */
+.el-pagination {
+  --el-pagination-button-bg-color: var(--bamboo-500);
+  --el-pagination-hover-color: var(--bamboo-500);
+  --el-pagination-active-bg-color: var(--bamboo-500);
+  --el-pagination-active-color: #fff;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+/* ===== 输入框 — 聚焦竹青描边 ===== */
+.el-input__wrapper.is-focus {
+  box-shadow: 0 0 0 2px rgba(91, 140, 90, 0.15) !important;
+}
+.el-textarea__inner:focus {
+  box-shadow: 0 0 0 2px rgba(91, 140, 90, 0.15) !important;
+  border-color: var(--bamboo-300) !important;
+}
+
+/* ===== 标签 ===== */
+.el-tag--primary {
+  --el-tag-bg-color: var(--bamboo-50);
+  --el-tag-border-color: var(--bamboo-200);
+  --el-tag-text-color: var(--bamboo-700);
+  border-radius: 4px;
+}
+.el-tag--success {
+  --el-tag-bg-color: var(--sprout-50);
+  --el-tag-border-color: var(--sprout-200);
+  --el-tag-text-color: var(--sprout-700);
+}
+.el-tag--warning {
+  --el-tag-bg-color: var(--gold-50);
+  --el-tag-border-color: var(--gold-200);
+  --el-tag-text-color: var(--gold-500);
+}
+.el-tag--danger {
+  --el-tag-bg-color: var(--accent-red-light);
+  --el-tag-border-color: #f0cccc;
+  --el-tag-text-color: var(--accent-red);
+}
+.el-tag--info {
+  --el-tag-bg-color: var(--tea-100);
+  --el-tag-border-color: var(--tea-300);
+  --el-tag-text-color: var(--ink-500);
+}
+
+/* ===== 对话框 ===== */
+.el-dialog {
+  border-radius: 12px;
+  --el-dialog-title-font-size: 18px;
+  --el-dialog-bg-color: var(--card-bg);
+}
+.el-dialog__header {
+  border-bottom: 1px solid var(--tea-200);
+  padding: 20px 24px 16px;
+}
+.el-dialog__footer {
+  border-top: 1px solid var(--tea-200);
+  padding: 12px 24px 16px;
+}
+
+/* ===== Tabs ===== */
+.el-tabs__active-bar {
+  background-color: var(--bamboo-500);
+}
+.el-tabs__item.is-active {
+  color: var(--bamboo-600);
+  font-weight: 600;
+}
+.el-tabs__item:hover {
+  color: var(--bamboo-500);
+}
+.el-tabs__nav-wrap::after {
+  background-color: var(--tea-200);
+}
+
+/* ===== 复选框 / 单选框 ===== */
+.el-checkbox__input.is-checked .el-checkbox__inner,
+.el-radio__input.is-checked .el-radio__inner {
+  background-color: var(--bamboo-500);
+  border-color: var(--bamboo-500);
+}
+.el-checkbox__input.is-checked + .el-checkbox__label,
+.el-radio__input.is-checked + .el-radio__label {
+  color: var(--bamboo-600);
+}
+
+/* ===== 开关 ===== */
+.el-switch.is-checked .el-switch__core {
+  background-color: var(--sprout-400);
+  border-color: var(--sprout-400);
+}
+
+/* ===== 进度条 — 新芽渐变 ===== */
+.el-progress-bar__inner {
+  background: linear-gradient(90deg, var(--sprout-400), var(--bamboo-300));
+}
+.el-progress__text {
+  color: var(--ink-600) !important;
+}
+
+/* ===== 下拉菜单 ===== */
+.el-dropdown-menu__item:not(.is-disabled):focus,
+.el-dropdown-menu__item:not(.is-disabled):hover {
+  background-color: var(--bamboo-50);
+  color: var(--bamboo-600);
+}
+
+/* ===== 步骤条 ===== */
+.el-step__head.is-process {
+  color: var(--bamboo-500);
+  border-color: var(--bamboo-500);
+}
+.el-step__title.is-process {
+  color: var(--bamboo-600);
+  font-weight: 600;
+}
+.el-step__head.is-finish {
+  color: var(--sprout-400);
+  border-color: var(--sprout-400);
+}
+.el-step__title.is-finish {
+  color: var(--sprout-500);
+}
+.el-step__head.is-wait {
+  color: var(--tea-400);
+  border-color: var(--tea-400);
+}
+
+/* ===== 评分 ===== */
+.el-rate__icon.is-active {
+  color: var(--gold-400);
+}
+
+/* ===== 消息提示 ===== */
+.el-message {
+  border-radius: 8px;
+  --el-message-bg-color: var(--card-bg);
+}
+.el-message--success {
+  border: 1px solid var(--sprout-200);
+}
+.el-message--warning {
+  border: 1px solid var(--gold-200);
+}
+.el-message--error {
+  border: 1px solid #f0cccc;
+}
+
+/* ===== 空状态 — 竹林意境 ===== */
+.el-empty {
+  --el-empty-fill-color-0: var(--tea-200);
+  --el-empty-fill-color-1: var(--tea-300);
+  --el-empty-fill-color-2: var(--tea-100);
+  --el-empty-fill-color-3: var(--bamboo-100);
+  --el-empty-fill-color-4: var(--bamboo-200);
+  --el-empty-fill-color-5: var(--sprout-100);
+  --el-empty-fill-color-6: var(--sprout-200);
+  --el-empty-fill-color-7: var(--tea-400);
+  --el-empty-fill-color-8: var(--bamboo-300);
+  --el-empty-fill-color-9: var(--sprout-300);
+  padding: 40px 0;
+}
+.el-empty__description p {
+  color: var(--ink-500);
+  font-size: 14px;
+}
+
+/* ===== 加载态 ===== */
+.el-loading-spinner .circular circle {
+  stroke: var(--bamboo-500);
+}
+.el-loading-mask {
+  background: rgba(248, 251, 246, 0.75);
+}
+
+/* ===== 骨架屏 ===== */
+.el-skeleton__item {
+  background: linear-gradient(90deg, var(--tea-200) 25%, var(--tea-100) 37%, var(--tea-200) 63%);
+  background-size: 400% 100%;
+}
+
+/* ===== 日期选择器 ===== */
+.el-date-editor .el-range-separator {
+  color: var(--ink-400);
+}
+
+/* ===== 选择器下拉 ===== */
+.el-select-dropdown__item.selected {
+  color: var(--bamboo-600);
+  font-weight: 600;
+}
+.el-select-dropdown__item:hover {
+  background-color: var(--bamboo-50);
+}
+
+/* ===== Popover ===== */
+.el-popover {
+  border-radius: 8px;
+  border: 1px solid var(--tea-200);
+  box-shadow: 0 4px 16px rgba(45, 74, 50, 0.08);
+}
+
+/* ===== 统计数值 ===== */
+.el-statistic__number {
+  font-family: 'Georgia', 'Noto Serif SC', serif;
+}
+
+/* ===== 表单标签 ===== */
+.el-form-item__label {
+  color: var(--ink-600);
+  font-weight: 500;
+}
+
+/* ===== 分割线 ===== */
+.el-divider__text {
+  color: var(--ink-500);
+  background-color: var(--card-bg);
+}
+
+/* ===== 折叠面板 ===== */
+.el-collapse-item__header {
+  color: var(--ink-800);
+  font-weight: 600;
+  border-bottom: 1px solid var(--tea-200);
+}
+.el-collapse-item__wrap {
+  border-bottom: 1px solid var(--tea-200);
+  background: var(--tea-50);
+}
+
+/* ===== 上传组件 ===== */
+.el-upload {
+  --el-upload-bg-color: var(--tea-50);
+  --el-upload-border-color: var(--tea-300);
+}
+
+/* ================================================================
+   自定义业务组件样式
+   ================================================================ */
+
+/* 页面标题 — 竹叶装饰线 */
+.page-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--ink-800);
+  margin-bottom: var(--section-gap);
+  position: relative;
+  padding-left: 18px;
+  letter-spacing: 1px;
+}
+.page-title::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 3px;
+  bottom: 3px;
+  width: 4px;
+  background: linear-gradient(180deg, var(--bamboo-300), var(--bamboo-500), var(--bamboo-300));
+  border-radius: 2px;
+}
+/* 标题后竹叶装饰 */
+.page-title::after {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 16px;
+  background: var(--sprout-200);
+  border-radius: 50% 0 50% 0;
+  opacity: 0;
+}
+
+/* 搜索栏容器 */
+.search-bar {
+  background: var(--card-bg);
+  border-radius: var(--card-radius);
+  padding: 16px 20px;
+  margin-bottom: var(--section-gap);
+  box-shadow: var(--card-shadow);
+  border: var(--card-border);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* 页面操作区 */
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--section-gap);
+}
+
+/* ===== 卷轴式卡片（竹韵版） ===== */
+.scroll-card {
+  background: linear-gradient(135deg, var(--tea-50) 0%, #fff 50%, var(--tea-50) 100%);
+  border: 1px solid var(--tea-300);
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(45, 74, 50, 0.05);
+  position: relative;
+  overflow: hidden;
+}
+/* 竹节轴杆 — 左右两侧 */
+.scroll-card::before,
+.scroll-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 6px;
+  background: linear-gradient(180deg, var(--bamboo-400), var(--bamboo-500) 50%, var(--bamboo-400));
+  border-radius: 3px;
+  opacity: 0.35;
+}
+.scroll-card::before { left: 4px; }
+.scroll-card::after { right: 4px; }
+/* 竹节节点 — 左右轴杆上的小凸起 */
+.scroll-card {
+  --bamboo-node-top: 30%;
+}
+.scroll-card::before {
+  box-shadow: 0 0 0 2px var(--tea-200), 0 calc(var(--bamboo-node-top) - 4px) 0 -1px var(--bamboo-500);
+}
+.scroll-card::after {
+  box-shadow: 0 0 0 2px var(--tea-200), 0 calc(var(--bamboo-node-top) + 10%) 0 -1px var(--bamboo-500);
+}
+.scroll-card .card-body {
+  padding: 20px 24px 20px 16px;
+}
+
+/* ===== 竹叶装饰印章 ===== */
+.seal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border: 2.5px solid var(--bamboo-600);
+  color: var(--bamboo-600);
+  border-radius: 50% 20% 50% 20%;
+  font-size: 12px;
+  font-weight: 700;
+  transform: rotate(-5deg);
+  letter-spacing: 1px;
+  background: radial-gradient(circle at 30% 30%, rgba(126, 200, 123, 0.15), transparent 60%);
+}
+
+/* ===== 引文块 — 竹节左边框 ===== */
+.quote-block {
+  border-left: 4px solid var(--bamboo-300);
+  padding: 12px 16px;
+  margin: 12px 0;
+  background: var(--tea-50);
+  border-radius: 0 8px 8px 0;
+  color: var(--ink-600);
+  font-style: italic;
+  letter-spacing: 0.5px;
+  position: relative;
+}
+.quote-block::before {
+  content: '';
+  position: absolute;
+  left: -7px;
+  top: 40%;
+  width: 10px;
+  height: 3px;
+  background: var(--bamboo-400);
+  border-radius: 2px;
+}
+
+/* ===== 渐变按钮 ===== */
+/* 竹青渐变 */
+.btn-ink {
+  background: linear-gradient(135deg, var(--bamboo-500), var(--bamboo-700));
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: 1px;
+  border-radius: 6px;
+  padding: 10px 24px;
+  transition: all 0.3s;
+  box-shadow: 0 2px 10px rgba(91, 140, 90, 0.25);
+  cursor: pointer;
+}
+.btn-ink:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(91, 140, 90, 0.35);
+}
+/* 新芽渐变 */
+.btn-celadon {
+  background: linear-gradient(135deg, var(--sprout-400), var(--sprout-600));
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: 1px;
+  border-radius: 6px;
+  padding: 10px 24px;
+  transition: all 0.3s;
+  box-shadow: 0 2px 10px rgba(126, 200, 123, 0.25);
+  cursor: pointer;
+}
+.btn-celadon:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(126, 200, 123, 0.35);
+}
+
+/* ===== 标签组 ===== */
+.tag-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+/* ===== 信息描述列表 ===== */
+.info-desc {
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--ink-600);
+  column-count: 2;
+  column-gap: 32px;
+}
+.info-desc dt {
+  color: var(--ink-500);
+  font-size: 12px;
+  letter-spacing: 1px;
+  margin-bottom: 2px;
+}
+.info-desc dd {
+  margin: 0 0 12px 0;
+  color: var(--ink-700);
+}
+
+/* ===== 竹叶呼吸动画（用于加载/高亮） ===== */
+@keyframes bambooPulse {
+  0%, 100% { opacity: 0.7; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.05); }
+}
+.bamboo-pulse {
+  animation: bambooPulse 2s ease-in-out infinite;
+}
+
+/* ===== 露珠微光（卡片悬停） ===== */
+@keyframes dewGlow {
+  0% { box-shadow: 0 2px 16px rgba(45, 74, 50, 0.06); }
+  100% { box-shadow: 0 4px 24px rgba(91, 140, 90, 0.12); }
+}
+
+/* ===== 竹节分隔线 ===== */
+.bamboo-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--tea-300) 20%, var(--bamboo-200) 50%, var(--tea-300) 80%, transparent);
+  margin: 16px 0;
+  position: relative;
+}
+.bamboo-divider::after {
+  content: '🎋';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--main-bg);
+  padding: 0 10px;
+  font-size: 14px;
+  color: var(--bamboo-400);
+}
+
+/* ===== 统计数值卡片内的微光效果 ===== */
+.stat-glow {
+  position: relative;
+}
+.stat-glow::before {
+  content: '';
+  position: absolute;
+  top: -30px;
+  right: -30px;
+  width: 80px;
+  height: 80px;
+  background: radial-gradient(circle, rgba(126, 200, 123, 0.08), transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* ===== 按钮内图标间距 ===== */
+.btn-icon {
+  vertical-align: middle;
+  margin-right: 4px;
+}

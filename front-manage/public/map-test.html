@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>高德地图 Key 测试</title>
+<style>
+  body { margin: 0; font-family: sans-serif; }
+  .toolbar { padding: 10px; background: #f5f5f5; display: flex; gap: 10px; align-items: center; }
+  .toolbar input { width: 260px; padding: 6px 10px; border: 1px solid #ddd; border-radius: 4px; }
+  .toolbar button { padding: 6px 16px; cursor: pointer; background: #5b8c5a; color: #fff; border: none; border-radius: 4px; }
+  #map { width: 100%; height: calc(100vh - 52px); }
+  .error { padding: 40px; text-align: center; color: #e74c3c; font-size: 18px; }
+  .success { padding: 40px; text-align: center; color: #27ae60; font-size: 18px; }
+  .coord { font-size: 13px; color: #666; min-width: 200px; }
+</style>
+</head>
+<body>
+<div class="toolbar">
+  <label>AMap Key:</label>
+  <input id="keyInput" type="text" placeholder="在此粘贴你的高德 Key">
+  <button onclick="testKey()">测试地图</button>
+  <span class="coord" id="coordInfo"></span>
+</div>
+<div id="map"><div class="error">请先粘贴高德 Key 再点击「测试地图」</div></div>
+
+<script>
+function testKey() {
+  const key = document.getElementById('keyInput').value.trim()
+  if (!key) { alert('请先输入 AMap Key'); return }
+
+  // 清除旧脚本和地图
+  const oldScript = document.querySelector('script[src*="webapi.amap.com"]')
+  if (oldScript) oldScript.remove()
+  const mapDiv = document.getElementById('map')
+  mapDiv.innerHTML = '<div class="success">正在加载 AMap JS API... ⏳</div>'
+
+  const script = document.createElement('script')
+  script.src = `https://webapi.amap.com/maps?v=2.0&key=${key}&plugin=AMap.Geocoder`
+  script.onload = () => {
+    try {
+      const map = new AMap.Map('map', {
+        center: [116.397428, 39.90923],
+        zoom: 15
+      })
+      map.on('complete', () => {
+        document.getElementById('coordInfo').textContent = '地图加载成功 ✓'
+      })
+      map.on('click', e => {
+        document.getElementById('coordInfo').textContent =
+          `经度: ${e.lnglat.lng.toFixed(6)}, 纬度: ${e.lnglat.lat.toFixed(6)}`
+        const marker = new AMap.Marker({ position: [e.lnglat.lng, e.lnglat.lat] })
+        map.clearMap()
+        map.add(marker)
+      })
+    } catch (e) {
+      mapDiv.innerHTML = `<div class="error">AMap 初始化失败: ${e.message}</div>`
+    }
+  }
+  script.onerror = () => {
+    mapDiv.innerHTML = '<div class="error">AMap JS API 加载失败 — Key 无效或网络不通。<br>请确认 Key 正确，并在高德控制台已启用「JS API 2.0」。</div>'
+  }
+  document.head.appendChild(script)
+}
+</script>
+</body>
+</html>

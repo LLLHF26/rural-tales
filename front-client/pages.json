@@ -1,0 +1,125 @@
+{
+	"pages": [
+		{
+			"path": "pages/login/index",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/login/password",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/village-list/index",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/village-detail/index",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/script-list/index",
+			"style": {
+				"navigationBarTitleText": "剧本列表",
+				"navigationBarBackgroundColor": "#F1F8E9",
+				"navigationBarTextStyle": "black"
+			}
+		},
+		{
+			"path": "pages/script-detail/index",
+			"style": {
+				"navigationBarTitleText": "剧本详情",
+				"navigationBarBackgroundColor": "#F1F8E9",
+				"navigationBarTextStyle": "black"
+			}
+		},
+		{
+			"path": "pages/play/index",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/chat/index",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/ar-scan/index",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/my/index",
+			"style": {
+				"navigationBarTitleText": "我的信息",
+				"navigationBarBackgroundColor": "#F1F8E9",
+				"navigationBarTextStyle": "black"
+			}
+		}
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "乡村剧本",
+		"navigationBarBackgroundColor": "#F1F8E9",
+		"backgroundColor": "#F1F8E9"
+	},
+	"tabBar": {
+		"color": "#999999",
+		"selectedColor": "#4CAF50",
+		"backgroundColor": "#FFFFFF",
+		"borderStyle": "white",
+		"list": [
+			{
+				"pagePath": "pages/index/index",
+				"text": "首页",
+				"iconPath": "static/home.png",
+				"selectedIconPath": "static/home-active.png"
+			},
+			{
+				"pagePath": "pages/village-list/index",
+				"text": "村庄",
+				"iconPath": "static/village.png",
+				"selectedIconPath": "static/village-active.png"
+			},
+			{
+				"pagePath": "pages/script-list/index",
+				"text": "剧本",
+				"iconPath": "static/script.png",
+				"selectedIconPath": "static/script-active.png"
+			},
+			{
+				"pagePath": "pages/my/index",
+				"text": "我的信息",
+				"iconPath": "static/my.png",
+				"selectedIconPath": "static/my-active.png"
+			}
+		]
+	},
+	"uniIdRouter": {},
+	"condition" : { //模式配置，仅开发期间生效
+		"current": 0, //当前激活的模式(list 的索引项)
+		"list": [
+			{
+				"name": "", //模式名称
+				"path": "", //启动页面，必选
+				"query": "" //启动参数，在页面的onLoad函数里面得到
+			}
+		]
+	}
+}

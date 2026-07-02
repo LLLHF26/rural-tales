@@ -1,0 +1,125 @@
+/**
+ * 这里是uni-app内置的常用样式变量
+ *
+ * uni-app 官方扩展插件及插件市场（https://ext.dcloud.net.cn）上很多三方插件均使用了这些样式变量
+ * 如果你是插件开发者，建议你使用scss预处理，并在插件代码中直接使用这些变量（无需 import 这个文件），方便用户通过搭积木的方式开发整体风格一致的App
+ *
+ */
+/**
+ * 如果你是App开发者（插件使用者），你可以通过修改这些变量来定制自己的插件主题，实现自定义主题功能
+ *
+ * 如果你的项目同样使用了scss预处理，你也可以直接在你的 scss 代码中使用如下变量，同时无需 import 这个文件
+ */
+/* 颜色变量 */
+/* 行为相关颜色 */
+/* 文字基本颜色 */
+/* 背景颜色 */
+/* 边框颜色 */
+/* 尺寸变量 */
+/* 文字尺寸 */
+/* 图片尺寸 */
+/* Border Radius */
+/* 水平间距 */
+/* 垂直间距 */
+/* 透明度 */
+/* 文章场景相关 */
+.chat-page.data-v-5a559478 {
+  height: 100vh;
+  background: #F1F8E9;
+  display: flex;
+  flex-direction: column;
+}
+.chat-scroll.data-v-5a559478 {
+  flex: 1;
+  padding: 20rpx 30rpx;
+}
+.messages.data-v-5a559478 {
+  padding-bottom: 20rpx;
+}
+.msg-row.data-v-5a559478 {
+  display: flex;
+  margin-bottom: 30rpx;
+}
+.msg-row.user.data-v-5a559478 {
+  justify-content: flex-end;
+}
+.msg-avatar.data-v-5a559478 {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 50%;
+  border: 2rpx solid #A5D6A7;
+  flex-shrink: 0;
+}
+.msg-bubble.data-v-5a559478 {
+  max-width: 500rpx;
+  padding: 20rpx 28rpx;
+  border-radius: 24rpx;
+  margin: 0 16rpx;
+}
+.msg-bubble.npc.data-v-5a559478 {
+  background: #fff;
+  border-top-left-radius: 6rpx;
+  box-shadow: 0 2rpx 10rpx rgba(76, 175, 80, 0.08);
+}
+.msg-bubble.user.data-v-5a559478 {
+  background: linear-gradient(135deg, #81C784 0%, #4CAF50 100%);
+  border-top-right-radius: 6rpx;
+}
+.msg-bubble.user .msg-text.data-v-5a559478 {
+  color: #fff;
+}
+.msg-text.data-v-5a559478 {
+  font-size: 28rpx;
+  line-height: 1.7;
+  color: #333;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+.choice-bar.data-v-5a559478 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+  padding: 16rpx 0;
+}
+.choice-item.data-v-5a559478 {
+  background: #fff;
+  border: 2rpx solid #4CAF50;
+  color: #4CAF50;
+  padding: 16rpx 28rpx;
+  border-radius: 30rpx;
+  font-size: 26rpx;
+}
+.choice-item.data-v-5a559478:active {
+  background: #4CAF50;
+  color: #fff;
+}
+.input-bar.data-v-5a559478 {
+  display: flex;
+  align-items: center;
+  padding: 16rpx 30rpx;
+  padding-bottom: env(safe-area-inset-bottom);
+  background: #fff;
+  box-shadow: 0 -2rpx 12rpx rgba(76, 175, 80, 0.08);
+}
+.chat-input.data-v-5a559478 {
+  flex: 1;
+  height: 72rpx;
+  background: #F1F8E9;
+  border-radius: 36rpx;
+  padding: 0 28rpx;
+  font-size: 28rpx;
+}
+.send-btn.data-v-5a559478 {
+  margin-left: 16rpx;
+  background: linear-gradient(135deg, #81C784 0%, #4CAF50 100%);
+  color: #fff;
+  border-radius: 36rpx;
+  font-size: 26rpx;
+  padding: 0 36rpx;
+  height: 72rpx;
+  line-height: 72rpx;
+  border: none;
+}
+.send-btn.data-v-5a559478:disabled {
+  opacity: 0.5;
+}

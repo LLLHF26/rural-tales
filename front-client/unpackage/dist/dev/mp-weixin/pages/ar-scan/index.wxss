@@ -1,0 +1,208 @@
+
+#__ar_scene_root__ {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 998;
+  background: #000;
+}
+#__ar_scene_root__ a-scene {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/**
+ * 这里是uni-app内置的常用样式变量
+ *
+ * uni-app 官方扩展插件及插件市场（https://ext.dcloud.net.cn）上很多三方插件均使用了这些样式变量
+ * 如果你是插件开发者，建议你使用scss预处理，并在插件代码中直接使用这些变量（无需 import 这个文件），方便用户通过搭积木的方式开发整体风格一致的App
+ *
+ */
+/**
+ * 如果你是App开发者（插件使用者），你可以通过修改这些变量来定制自己的插件主题，实现自定义主题功能
+ *
+ * 如果你的项目同样使用了scss预处理，你也可以直接在你的 scss 代码中使用如下变量，同时无需 import 这个文件
+ */
+/* 颜色变量 */
+/* 行为相关颜色 */
+/* 文字基本颜色 */
+/* 背景颜色 */
+/* 边框颜色 */
+/* 尺寸变量 */
+/* 文字尺寸 */
+/* 图片尺寸 */
+/* Border Radius */
+/* 水平间距 */
+/* 垂直间距 */
+/* 透明度 */
+/* 文章场景相关 */
+.ar-ui-overlay.data-v-29bee293 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
+  pointer-events: none;
+}
+.ar-topbar.data-v-29bee293, .ar-bottombar.data-v-29bee293, .ar-status-bar.data-v-29bee293, .ar-error-mask.data-v-29bee293, .ar-loading-mask.data-v-29bee293,
+.ar-collect-btn.data-v-29bee293, .ar-back.data-v-29bee293, .ar-retry-btn.data-v-29bee293, .ar-close-btn.data-v-29bee293 {
+  pointer-events: auto;
+}
+.ar-error-mask.data-v-29bee293 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  gap: 32rpx;
+}
+.ar-error-text.data-v-29bee293 {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 28rpx;
+  text-align: center;
+  padding: 0 40rpx;
+}
+.ar-retry-btn.data-v-29bee293 {
+  background: linear-gradient(135deg, #FF9800, #F57C00);
+  color: #fff;
+  padding: 18rpx 60rpx;
+  border-radius: 32rpx;
+  font-size: 28rpx;
+}
+.ar-close-btn.data-v-29bee293 {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 26rpx;
+  padding: 12rpx 32rpx;
+  border: 1rpx solid rgba(255, 255, 255, 0.3);
+  border-radius: 32rpx;
+}
+.ar-status-bar.data-v-29bee293 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 15;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16rpx;
+}
+.ar-status-hint.data-v-29bee293 {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 28rpx;
+}
+.ar-status-dot.data-v-29bee293 {
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: 50%;
+  background: #FF9800;
+  animation: pulse-29bee293 1.2s ease-in-out infinite;
+}
+@keyframes pulse-29bee293 {
+0%, 100% {
+    opacity: 0.4;
+    transform: scale(1);
+}
+50% {
+    opacity: 1;
+    transform: scale(1.5);
+}
+}
+.ar-topbar.data-v-29bee293 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 0 24rpx;
+  padding-top: env(safe-area-inset-top);
+  height: 88rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), transparent);
+  z-index: 20;
+}
+.ar-back.data-v-29bee293 {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ar-back-icon.data-v-29bee293 {
+  font-size: 28rpx;
+  color: #fff;
+}
+.ar-title.data-v-29bee293 {
+  font-size: 30rpx;
+  color: #fff;
+  font-weight: 500;
+}
+.ar-topbar-right.data-v-29bee293 {
+  width: 56rpx;
+}
+.ar-bottombar.data-v-29bee293 {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 24rpx 32rpx;
+  padding-bottom: calc(24rpx + env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
+  z-index: 20;
+}
+.ar-hint-text.data-v-29bee293 {
+  font-size: 24rpx;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 12rpx;
+}
+.ar-collect-btn.data-v-29bee293 {
+  width: 100%;
+  background: linear-gradient(135deg, #FF9800, #F57C00);
+  color: #fff;
+  border: none;
+  border-radius: 32rpx;
+  padding: 22rpx 0;
+  font-size: 30rpx;
+  font-weight: 600;
+  animation: glow-29bee293 2s ease-in-out infinite;
+}
+@keyframes glow-29bee293 {
+0%, 100% {
+    box-shadow: 0 0 16rpx rgba(255, 152, 0, 0.4);
+}
+50% {
+    box-shadow: 0 0 32rpx rgba(255, 152, 0, 0.8);
+}
+}
+.ar-loading-mask.data-v-29bee293 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 30;
+}
+.ar-loading-text.data-v-29bee293 {
+  font-size: 28rpx;
+  color: #fff;
+}

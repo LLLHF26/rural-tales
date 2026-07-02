@@ -1,0 +1,962 @@
+/**
+ * 这里是uni-app内置的常用样式变量
+ *
+ * uni-app 官方扩展插件及插件市场（https://ext.dcloud.net.cn）上很多三方插件均使用了这些样式变量
+ * 如果你是插件开发者，建议你使用scss预处理，并在插件代码中直接使用这些变量（无需 import 这个文件），方便用户通过搭积木的方式开发整体风格一致的App
+ *
+ */
+/**
+ * 如果你是App开发者（插件使用者），你可以通过修改这些变量来定制自己的插件主题，实现自定义主题功能
+ *
+ * 如果你的项目同样使用了scss预处理，你也可以直接在你的 scss 代码中使用如下变量，同时无需 import 这个文件
+ */
+/* 颜色变量 */
+/* 行为相关颜色 */
+/* 文字基本颜色 */
+/* 背景颜色 */
+/* 边框颜色 */
+/* 尺寸变量 */
+/* 文字尺寸 */
+/* 图片尺寸 */
+/* Border Radius */
+/* 水平间距 */
+/* 垂直间距 */
+/* 透明度 */
+/* 文章场景相关 */
+.play-page.data-v-5c0a22ca {
+  height: 100%;
+  overflow: hidden;
+  background: #F1F8E9;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+.page-overlay.data-v-5c0a22ca {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.2);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* NPC 信息头 */
+.npc-header.data-v-5c0a22ca {
+  display: flex;
+  align-items: center;
+  padding: 16rpx 30rpx;
+  background: transparent;
+  border-bottom: 1rpx solid rgba(76, 175, 80, 0.12);
+  position: relative;
+  z-index: 1;
+}
+.npc-header-avatar.data-v-5c0a22ca {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 50%;
+  border: 2rpx solid #A5D6A7;
+  margin-right: 16rpx;
+}
+.npc-header-avatar.data-v-5c0a22ca:active {
+  transform: scale(0.92);
+  opacity: 0.8;
+}
+.npc-header-info.data-v-5c0a22ca {
+  flex: 1;
+}
+.npc-header-name.data-v-5c0a22ca {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #2E7D32;
+  display: block;
+}
+.npc-header-scene.data-v-5c0a22ca {
+  font-size: 22rpx;
+  color: #999;
+}
+.has-scene .npc-header-name.data-v-5c0a22ca {
+  color: #fff;
+  text-shadow: 0 1rpx 4rpx rgba(0, 0, 0, 0.4);
+}
+.has-scene .npc-header-scene.data-v-5c0a22ca {
+  color: rgba(255, 255, 255, 0.75);
+  text-shadow: 0 1rpx 4rpx rgba(0, 0, 0, 0.4);
+}
+.has-scene .npc-header-avatar.data-v-5c0a22ca {
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.2);
+}
+.has-scene .npc-header.data-v-5c0a22ca {
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+.header-badge.data-v-5c0a22ca {
+  font-size: 36rpx;
+  padding: 8rpx;
+}
+
+/* 导航栏右侧详情按钮 */
+.nav-detail-btn.data-v-5c0a22ca {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 4rpx 12rpx;
+}
+.nav-detail-icon.data-v-5c0a22ca {
+  font-size: 32rpx;
+  line-height: 1;
+}
+.nav-detail-text.data-v-5c0a22ca {
+  font-size: 20rpx;
+  color: #fff;
+  margin-top: 2rpx;
+}
+
+/* 进度面板 */
+.progress-panel.data-v-5c0a22ca {
+  background: #fff;
+  padding: 16rpx 30rpx 20rpx;
+  border-bottom: 1rpx solid #E8F5E9;
+  position: relative;
+  z-index: 1;
+}
+.progress-row.data-v-5c0a22ca {
+  display: flex;
+  align-items: center;
+  gap: 14rpx;
+}
+.progress-label.data-v-5c0a22ca {
+  font-size: 24rpx;
+  color: #999;
+  flex-shrink: 0;
+}
+.progress-bar.data-v-5c0a22ca {
+  flex: 1;
+  height: 10rpx;
+  background: #E8F5E9;
+  border-radius: 5rpx;
+  overflow: hidden;
+}
+.progress-fill.data-v-5c0a22ca {
+  height: 100%;
+  background: linear-gradient(to right, #81C784, #4CAF50);
+  border-radius: 5rpx;
+}
+.progress-fill.task.data-v-5c0a22ca {
+  background: linear-gradient(to right, #64B5F6, #2196F3);
+}
+.progress-num.data-v-5c0a22ca {
+  font-size: 22rpx;
+  color: #A5D6A7;
+  flex-shrink: 0;
+}
+.panel-sub.data-v-5c0a22ca {
+  font-size: 22rpx;
+  color: #2E7D32;
+  display: block;
+  margin: 14rpx 0 10rpx;
+}
+.item-row.data-v-5c0a22ca {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10rpx;
+}
+.item-tag.data-v-5c0a22ca {
+  display: flex;
+  align-items: center;
+  gap: 6rpx;
+  font-size: 20rpx;
+  color: #2E7D32;
+  background: #E8F5E9;
+  padding: 6rpx 14rpx;
+  border-radius: 16rpx;
+}
+.item-tag-icon.data-v-5c0a22ca {
+  width: 28rpx;
+  height: 28rpx;
+  border-radius: 6rpx;
+}
+
+/* 可触发任务 */
+.available-task.data-v-5c0a22ca {
+  background: #F1F8E9;
+  border-radius: 12rpx;
+  padding: 16rpx 20rpx;
+  margin-bottom: 12rpx;
+}
+.available-task-info.data-v-5c0a22ca {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6rpx;
+}
+.available-task-name.data-v-5c0a22ca {
+  font-size: 26rpx;
+  font-weight: 500;
+  color: #2E7D32;
+}
+.available-task-type.data-v-5c0a22ca {
+  font-size: 20rpx;
+  background: #4CAF50;
+  color: #fff;
+  padding: 2rpx 12rpx;
+  border-radius: 10rpx;
+}
+.available-task-desc.data-v-5c0a22ca {
+  font-size: 22rpx;
+  color: #999;
+  display: block;
+  margin-bottom: 10rpx;
+}
+.available-task-btn.data-v-5c0a22ca {
+  font-size: 24rpx;
+  padding: 8rpx 0;
+  background: #4CAF50;
+  color: #fff;
+  border-radius: 24rpx;
+  border: none;
+  text-align: center;
+}
+
+/* 聊天区 */
+.chat-scroll.data-v-5c0a22ca {
+  flex: 1;
+  height: 0;
+  padding: 20rpx 30rpx;
+  position: relative;
+  z-index: 1;
+}
+.messages.data-v-5c0a22ca {
+  padding-bottom: 20rpx;
+}
+.msg-row.data-v-5c0a22ca {
+  display: flex;
+  margin-bottom: 28rpx;
+}
+.msg-row.user.data-v-5c0a22ca {
+  justify-content: flex-end;
+}
+.msg-row.narrator.data-v-5c0a22ca {
+  justify-content: center;
+}
+.msg-avatar.data-v-5c0a22ca {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 50%;
+  border: 2rpx solid #A5D6A7;
+  flex-shrink: 0;
+}
+.narrator-avatar.data-v-5c0a22ca {
+  border-color: #BCAAA4;
+  opacity: 0.85;
+}
+.msg-bubble-wrap.data-v-5c0a22ca {
+  display: flex;
+  flex-direction: column;
+  max-width: 800rpx;
+}
+.msg-bubble.data-v-5c0a22ca {
+  max-width: 100%;
+  padding: 18rpx 24rpx;
+  border-radius: 20rpx;
+  margin: 0 14rpx;
+}
+.msg-bubble.npc.data-v-5c0a22ca {
+  background: #fff;
+  border-top-left-radius: 6rpx;
+  box-shadow: 0 2rpx 10rpx rgba(76, 175, 80, 0.06);
+}
+.msg-bubble.user.data-v-5c0a22ca {
+  background: linear-gradient(135deg, #81C784 0%, #4CAF50 100%);
+  border-top-right-radius: 6rpx;
+}
+.msg-bubble.user .msg-text.data-v-5c0a22ca {
+  color: #fff;
+}
+.msg-bubble.system.data-v-5c0a22ca {
+  background: #FFF8E1;
+  border-radius: 16rpx;
+  max-width: 560rpx;
+  margin: 0 auto;
+}
+.msg-bubble.narrator.data-v-5c0a22ca {
+  background: rgba(139, 119, 90, 0.12);
+  border-radius: 16rpx;
+  max-width: 560rpx;
+  margin: 0 auto;
+}
+.has-scene .msg-bubble.npc.data-v-5c0a22ca {
+  background: rgba(255, 255, 255, 0.88);
+  -webkit-backdrop-filter: blur(4rpx);
+          backdrop-filter: blur(4rpx);
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.1);
+}
+.has-scene .msg-bubble.system.data-v-5c0a22ca {
+  background: rgba(255, 248, 225, 0.9);
+  -webkit-backdrop-filter: blur(4rpx);
+          backdrop-filter: blur(4rpx);
+}
+.has-scene .msg-bubble.narrator.data-v-5c0a22ca {
+  background: rgba(139, 119, 90, 0.18);
+  -webkit-backdrop-filter: blur(4rpx);
+          backdrop-filter: blur(4rpx);
+}
+.has-scene .narrator-avatar.data-v-5c0a22ca {
+  border-color: rgba(255, 255, 255, 0.5);
+  opacity: 0.9;
+}
+.has-scene .progress-panel.data-v-5c0a22ca, .has-scene .branch-panel.data-v-5c0a22ca {
+  background: rgba(255, 255, 255, 0.9);
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+  -webkit-backdrop-filter: blur(4rpx);
+          backdrop-filter: blur(4rpx);
+}
+.has-scene .input-bar.data-v-5c0a22ca {
+  background: rgba(255, 255, 255, 0.9);
+  -webkit-backdrop-filter: blur(4rpx);
+          backdrop-filter: blur(4rpx);
+  box-shadow: 0 -2rpx 12rpx rgba(0, 0, 0, 0.2);
+}
+
+/* 行动提示 */
+.msg-hint.data-v-5c0a22ca {
+  display: flex;
+  align-items: flex-start;
+  gap: 8rpx;
+  margin: 10rpx 14rpx 0;
+  padding: 14rpx 18rpx;
+  background: rgba(243, 248, 255, 0.92);
+  border-radius: 12rpx;
+  border-left: 4rpx solid #90CAF9;
+  -webkit-backdrop-filter: blur(4rpx);
+          backdrop-filter: blur(4rpx);
+}
+.msg-hint-icon.data-v-5c0a22ca {
+  font-size: 22rpx;
+  flex-shrink: 0;
+  margin-top: 2rpx;
+}
+.msg-hint-text.data-v-5c0a22ca {
+  font-size: 22rpx;
+  color: #5C7D9E;
+  line-height: 1.5;
+}
+.narrator-wrap.data-v-5c0a22ca {
+  max-width: 560rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.narrator-hint.data-v-5c0a22ca {
+  margin: 10rpx 0 0;
+  border-left-color: #BCAAA4;
+  background: rgba(245, 240, 235, 0.9);
+}
+.msg-text.data-v-5c0a22ca {
+  font-size: 28rpx;
+  line-height: 1.7;
+  color: #333;
+  white-space: pre-wrap;
+  word-break: break-all;
+  font-family: "SimSun", "宋体", serif;
+}
+.msg-narrator-text.data-v-5c0a22ca {
+  font-size: 26rpx;
+  line-height: 1.8;
+  color: #8B775A;
+  white-space: pre-wrap;
+  word-break: break-all;
+  font-style: italic;
+  text-align: center;
+  display: block;
+  font-family: "SimSun", "宋体", serif;
+}
+
+/* 任务卡片 */
+.task-card.data-v-5c0a22ca {
+  background: #fff;
+  border: 2rpx solid #4CAF50;
+  border-radius: 16rpx;
+  padding: 20rpx 24rpx;
+  margin: 0 0 24rpx 78rpx;
+  box-shadow: 0 2rpx 12rpx rgba(76, 175, 80, 0.08);
+}
+.task-card-header.data-v-5c0a22ca {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  margin-bottom: 8rpx;
+}
+.task-card-icon.data-v-5c0a22ca {
+  font-size: 32rpx;
+}
+.task-card-info.data-v-5c0a22ca {
+  flex: 1;
+}
+.task-card-title.data-v-5c0a22ca {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #2E7D32;
+  display: block;
+}
+.task-card-type.data-v-5c0a22ca {
+  font-size: 20rpx;
+  color: #4CAF50;
+  background: #E8F5E9;
+  padding: 2rpx 12rpx;
+  border-radius: 10rpx;
+}
+.task-card-desc.data-v-5c0a22ca {
+  font-size: 24rpx;
+  color: #999;
+  margin-bottom: 14rpx;
+  display: block;
+}
+.task-card-btn.data-v-5c0a22ca {
+  background: linear-gradient(135deg, #81C784 0%, #4CAF50 100%);
+  color: #fff;
+  border-radius: 30rpx;
+  font-size: 26rpx;
+  padding: 12rpx 0;
+  border: none;
+  text-align: center;
+}
+.task-card.completed.data-v-5c0a22ca {
+  border-color: #C8E6C9;
+  background: #F9FEF9;
+}
+.task-card-done.data-v-5c0a22ca {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8rpx;
+}
+.task-card-done-text.data-v-5c0a22ca {
+  font-size: 26rpx;
+  color: #4CAF50;
+  font-weight: 500;
+}
+.task-card-reward.data-v-5c0a22ca {
+  display: flex;
+  align-items: center;
+  gap: 6rpx;
+  background: #FFF8E1;
+  padding: 10rpx 18rpx;
+  border-radius: 20rpx;
+}
+.reward-label.data-v-5c0a22ca {
+  font-size: 22rpx;
+  color: #F9A825;
+}
+.reward-name.data-v-5c0a22ca {
+  font-size: 24rpx;
+  color: #E65100;
+  font-weight: 500;
+}
+
+/* 选择按钮 */
+.choice-row.data-v-5c0a22ca {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14rpx;
+  margin: 0 0 24rpx 78rpx;
+}
+.choice-btn.data-v-5c0a22ca {
+  background: #fff;
+  border: 2rpx solid #4CAF50;
+  color: #4CAF50;
+  padding: 14rpx 24rpx;
+  border-radius: 28rpx;
+  font-size: 26rpx;
+}
+.choice-btn.data-v-5c0a22ca:active {
+  background: #4CAF50;
+  color: #fff;
+}
+
+/* 分支选择面板（独立于进度面板） */
+.branch-panel.data-v-5c0a22ca {
+  background: #fff;
+  padding: 20rpx 30rpx 16rpx;
+  border-bottom: 2rpx solid #E8F5E9;
+  position: relative;
+  z-index: 1;
+}
+.branch-panel-title.data-v-5c0a22ca {
+  font-size: 26rpx;
+  color: #2E7D32;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 16rpx;
+}
+
+/* 分支选择按钮 */
+.branch-option.data-v-5c0a22ca {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20rpx 24rpx;
+  background: linear-gradient(135deg, #E8F5E9, #C8E6C9);
+  border: 2rpx solid #A5D6A7;
+  border-radius: 16rpx;
+  margin-bottom: 14rpx;
+  cursor: pointer;
+}
+.branch-option.data-v-5c0a22ca:active {
+  background: #A5D6A7;
+}
+.branch-option-label.data-v-5c0a22ca {
+  font-size: 28rpx;
+  color: #2E7D32;
+  font-weight: 500;
+}
+.branch-option-arrow.data-v-5c0a22ca {
+  font-size: 24rpx;
+  color: #4CAF50;
+}
+
+/* 输入中动画 */
+.typing-indicator.data-v-5c0a22ca {
+  display: flex;
+  gap: 8rpx;
+  padding: 14rpx 24rpx;
+  background: #fff;
+  border-radius: 16rpx;
+  max-width: 120rpx;
+  margin-bottom: 20rpx;
+}
+.typing-dot.data-v-5c0a22ca {
+  width: 14rpx;
+  height: 14rpx;
+  background: #A5D6A7;
+  border-radius: 50%;
+  animation: typingBounce-5c0a22ca 1.4s infinite;
+}
+.typing-dot.data-v-5c0a22ca:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.typing-dot.data-v-5c0a22ca:nth-child(3) {
+  animation-delay: 0.4s;
+}
+@keyframes typingBounce-5c0a22ca {
+0%, 60%, 100% {
+    transform: translateY(0);
+}
+30% {
+    transform: translateY(-10rpx);
+}
+}
+/* 前往下一节 */
+.next-node-bar.data-v-5c0a22ca {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24rpx 30rpx;
+  background: #FFF8E1;
+  background: linear-gradient(135deg, #FFF8E1, #FFF3CD);
+  border-top: 2rpx solid #FFE082;
+  gap: 12rpx;
+  cursor: pointer;
+  position: relative;
+  z-index: 2;
+}
+.next-node-icon.data-v-5c0a22ca {
+  font-size: 28rpx;
+  color: #FF9800;
+  line-height: 1;
+}
+.next-node-text.data-v-5c0a22ca {
+  font-size: 30rpx;
+  color: #E65100;
+  font-weight: 600;
+  line-height: 1;
+}
+
+/* 输入栏 */
+.input-bar.data-v-5c0a22ca {
+  display: flex;
+  align-items: center;
+  padding: 16rpx 30rpx;
+  padding-bottom: calc(16rpx + env(safe-area-inset-bottom));
+  background: #fff;
+  box-shadow: 0 -2rpx 12rpx rgba(76, 175, 80, 0.08);
+  position: relative;
+  z-index: 1;
+}
+.chat-input.data-v-5c0a22ca {
+  flex: 1;
+  height: 72rpx;
+  background: #F1F8E9;
+  border-radius: 36rpx;
+  padding: 0 28rpx;
+  font-size: 28rpx;
+}
+.send-btn.data-v-5c0a22ca {
+  margin-left: 16rpx;
+  background: linear-gradient(135deg, #81C784 0%, #4CAF50 100%);
+  color: #fff;
+  border-radius: 36rpx;
+  font-size: 26rpx;
+  padding: 0 32rpx;
+  height: 72rpx;
+  line-height: 72rpx;
+  border: none;
+}
+.send-btn.data-v-5c0a22ca:disabled {
+  opacity: 0.5;
+}
+
+/* 结局弹窗 */
+.ending-mask.data-v-5c0a22ca {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.ending-modal.data-v-5c0a22ca {
+  background: #fff;
+  border-radius: 24rpx;
+  padding: 48rpx 40rpx 36rpx;
+  width: 620rpx;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 12rpx 48rpx rgba(0, 0, 0, 0.25);
+  overflow-y: auto;
+}
+.ending-badge-wrap.data-v-5c0a22ca {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+.ending-badge-icon.data-v-5c0a22ca {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  border: 4rpx solid #FFD54F;
+  margin-bottom: 10rpx;
+}
+.ending-badge-emoji.data-v-5c0a22ca {
+  font-size: 80rpx;
+  margin-bottom: 8rpx;
+}
+.ending-badge-name.data-v-5c0a22ca {
+  font-size: 26rpx;
+  color: #E65100;
+  font-weight: 600;
+  background: #FFF8E1;
+  padding: 6rpx 24rpx;
+  border-radius: 20rpx;
+}
+.ending-title.data-v-5c0a22ca {
+  font-size: 40rpx;
+  font-weight: 700;
+  color: #2E7D32;
+  margin-bottom: 18rpx;
+}
+.ending-image.data-v-5c0a22ca {
+  width: 100%;
+  height: 260rpx;
+  border-radius: 16rpx;
+  margin-bottom: 18rpx;
+}
+.ending-desc-wrap.data-v-5c0a22ca {
+  max-height: 200rpx;
+  width: 100%;
+  margin-bottom: 24rpx;
+}
+.ending-desc.data-v-5c0a22ca {
+  font-size: 26rpx;
+  color: #666;
+  line-height: 1.8;
+  text-align: center;
+}
+.ending-rate.data-v-5c0a22ca {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 24rpx;
+  padding: 24rpx 0;
+  border-top: 1rpx solid #F0F0F0;
+  border-bottom: 1rpx solid #F0F0F0;
+}
+.ending-rate-title.data-v-5c0a22ca {
+  font-size: 26rpx;
+  color: #333;
+  margin-bottom: 16rpx;
+}
+.ending-stars.data-v-5c0a22ca {
+  display: flex;
+  gap: 12rpx;
+  margin-bottom: 20rpx;
+}
+.ending-star.data-v-5c0a22ca {
+  font-size: 52rpx;
+  color: #E0E0E0;
+}
+.ending-star.data-v-5c0a22ca:active {
+  transform: scale(1.2);
+}
+.ending-star.active.data-v-5c0a22ca {
+  color: #FFB300;
+}
+.ending-rate-btn.data-v-5c0a22ca {
+  background: linear-gradient(135deg, #FFB300, #FF9800);
+  color: #fff;
+  border-radius: 30rpx;
+  font-size: 26rpx;
+  padding: 14rpx 48rpx;
+  border: none;
+}
+.ending-rate-btn.data-v-5c0a22ca:disabled {
+  opacity: 0.4;
+}
+.ending-rate-done.data-v-5c0a22ca {
+  padding: 20rpx 0;
+  margin-bottom: 16rpx;
+}
+.ending-rate-done-text.data-v-5c0a22ca {
+  font-size: 28rpx;
+  color: #4CAF50;
+  font-weight: 500;
+}
+.ending-home-btn.data-v-5c0a22ca {
+  width: 100%;
+  background: linear-gradient(135deg, #81C784, #4CAF50);
+  color: #fff;
+  border-radius: 36rpx;
+  font-size: 30rpx;
+  padding: 18rpx 0;
+  border: none;
+  text-align: center;
+}
+
+/* NPC 详情弹窗 */
+.npc-modal-mask.data-v-5c0a22ca {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+.npc-modal.data-v-5c0a22ca {
+  background: #fff;
+  border-radius: 24rpx;
+  padding: 48rpx 40rpx 36rpx;
+  width: 580rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 12rpx 48rpx rgba(0, 0, 0, 0.2);
+}
+.npc-modal-avatar.data-v-5c0a22ca {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 50%;
+  border: 4rpx solid #A5D6A7;
+  margin-bottom: 20rpx;
+}
+.npc-modal-name.data-v-5c0a22ca {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #2E7D32;
+  margin-bottom: 6rpx;
+}
+.npc-modal-role.data-v-5c0a22ca {
+  font-size: 24rpx;
+  color: #fff;
+  background: #4CAF50;
+  padding: 4rpx 20rpx;
+  border-radius: 14rpx;
+  margin-bottom: 16rpx;
+}
+.npc-modal-desc.data-v-5c0a22ca {
+  font-size: 26rpx;
+  color: #666;
+  text-align: center;
+  line-height: 1.7;
+  margin-bottom: 24rpx;
+}
+.npc-modal-relation.data-v-5c0a22ca {
+  width: 100%;
+  background: #F1F8E9;
+  border-radius: 14rpx;
+  padding: 20rpx 24rpx;
+  margin-bottom: 28rpx;
+}
+.npc-modal-relation-header.data-v-5c0a22ca {
+  font-size: 24rpx;
+  color: #2E7D32;
+  margin-bottom: 12rpx;
+  display: flex;
+  align-items: center;
+  gap: 6rpx;
+}
+.relation-icon.data-v-5c0a22ca {
+  font-size: 28rpx;
+}
+.relation-bar-wrap.data-v-5c0a22ca {
+  display: flex;
+  align-items: center;
+  gap: 14rpx;
+}
+.relation-bar.data-v-5c0a22ca {
+  flex: 1;
+  height: 14rpx;
+  background: #E0E0E0;
+  border-radius: 7rpx;
+  overflow: hidden;
+}
+.relation-fill.data-v-5c0a22ca {
+  height: 100%;
+  background: linear-gradient(to right, #AED581, #4CAF50);
+  border-radius: 7rpx;
+}
+.relation-level.data-v-5c0a22ca {
+  font-size: 22rpx;
+  color: #4CAF50;
+  font-weight: 500;
+}
+.npc-modal-close.data-v-5c0a22ca {
+  font-size: 28rpx;
+  color: #4CAF50;
+  padding: 16rpx 60rpx;
+  border: 2rpx solid #4CAF50;
+  border-radius: 36rpx;
+}
+.npc-modal-close.data-v-5c0a22ca:active {
+  background: #4CAF50;
+  color: #fff;
+}
+
+/* 道具详情弹窗 */
+.item-detail-modal.data-v-5c0a22ca {
+  background: #fff;
+  border-radius: 24rpx;
+  padding: 48rpx 40rpx 36rpx;
+  width: 580rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 12rpx 48rpx rgba(0, 0, 0, 0.2);
+}
+.item-detail-icon.data-v-5c0a22ca {
+  width: 140rpx;
+  height: 140rpx;
+  border-radius: 20rpx;
+  border: 3rpx solid #FFCC80;
+  margin-bottom: 20rpx;
+}
+.item-detail-icon-placeholder.data-v-5c0a22ca {
+  width: 140rpx;
+  height: 140rpx;
+  border-radius: 20rpx;
+  background: #FFF8E1;
+  border: 3rpx solid #FFCC80;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 60rpx;
+  margin-bottom: 20rpx;
+}
+.item-detail-name.data-v-5c0a22ca {
+  font-size: 34rpx;
+  font-weight: 700;
+  color: #E65100;
+  margin-bottom: 6rpx;
+}
+.item-detail-type.data-v-5c0a22ca {
+  font-size: 22rpx;
+  color: #fff;
+  background: #FF9800;
+  padding: 4rpx 20rpx;
+  border-radius: 14rpx;
+  margin-bottom: 20rpx;
+}
+.item-detail-desc.data-v-5c0a22ca {
+  font-size: 26rpx;
+  color: #666;
+  text-align: center;
+  line-height: 1.7;
+  margin-bottom: 20rpx;
+  background: #FFF8E1;
+  padding: 20rpx 24rpx;
+  border-radius: 14rpx;
+  width: 100%;
+}
+.item-detail-meta.data-v-5c0a22ca {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14rpx 0;
+  border-top: 1rpx solid #F5F5F5;
+}
+.item-detail-meta-label.data-v-5c0a22ca {
+  font-size: 24rpx;
+  color: #999;
+}
+.item-detail-meta-value.data-v-5c0a22ca {
+  font-size: 24rpx;
+  color: #333;
+  font-weight: 500;
+}
+/**
+ * 这里是uni-app内置的常用样式变量
+ *
+ * uni-app 官方扩展插件及插件市场（https://ext.dcloud.net.cn）上很多三方插件均使用了这些样式变量
+ * 如果你是插件开发者，建议你使用scss预处理，并在插件代码中直接使用这些变量（无需 import 这个文件），方便用户通过搭积木的方式开发整体风格一致的App
+ *
+ */
+/**
+ * 如果你是App开发者（插件使用者），你可以通过修改这些变量来定制自己的插件主题，实现自定义主题功能
+ *
+ * 如果你的项目同样使用了scss预处理，你也可以直接在你的 scss 代码中使用如下变量，同时无需 import 这个文件
+ */
+/* 颜色变量 */
+/* 行为相关颜色 */
+/* 文字基本颜色 */
+/* 背景颜色 */
+/* 边框颜色 */
+/* 尺寸变量 */
+/* 文字尺寸 */
+/* 图片尺寸 */
+/* Border Radius */
+/* 水平间距 */
+/* 垂直间距 */
+/* 透明度 */
+/* 文章场景相关 */
+/* 聊天区滚动条 - 覆盖 uni-app H5 scroll-view 内部结构 */
+uni-scroll-view ::-webkit-scrollbar,
+uni-scroll-view::-webkit-scrollbar,
+.play-page ::-webkit-scrollbar {
+  width: 8rpx !important;
+}
+uni-scroll-view ::-webkit-scrollbar-thumb,
+uni-scroll-view::-webkit-scrollbar-thumb,
+.play-page ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.55) !important;
+  border-radius: 4rpx !important;
+}
+uni-scroll-view ::-webkit-scrollbar-track,
+uni-scroll-view::-webkit-scrollbar-track,
+.play-page ::-webkit-scrollbar-track {
+  background: transparent !important;
+}

@@ -1,0 +1,91 @@
+/**
+ * 这里是uni-app内置的常用样式变量
+ *
+ * uni-app 官方扩展插件及插件市场（https://ext.dcloud.net.cn）上很多三方插件均使用了这些样式变量
+ * 如果你是插件开发者，建议你使用scss预处理，并在插件代码中直接使用这些变量（无需 import 这个文件），方便用户通过搭积木的方式开发整体风格一致的App
+ *
+ */
+/**
+ * 如果你是App开发者（插件使用者），你可以通过修改这些变量来定制自己的插件主题，实现自定义主题功能
+ *
+ * 如果你的项目同样使用了scss预处理，你也可以直接在你的 scss 代码中使用如下变量，同时无需 import 这个文件
+ */
+/* 颜色变量 */
+/* 行为相关颜色 */
+/* 文字基本颜色 */
+/* 背景颜色 */
+/* 边框颜色 */
+/* 尺寸变量 */
+/* 文字尺寸 */
+/* 图片尺寸 */
+/* Border Radius */
+/* 水平间距 */
+/* 垂直间距 */
+/* 透明度 */
+/* 文章场景相关 */
+.script-card.data-v-f64c4164 {
+  background: #fff;
+  border-radius: 20rpx;
+  overflow: hidden;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.06);
+  margin-bottom: 28rpx;
+  position: relative;
+}
+.script-card.data-v-f64c4164:active {
+  transform: scale(0.98);
+}
+.card-cover.data-v-f64c4164 {
+  width: 100%;
+  height: 300rpx;
+}
+.card-badge.data-v-f64c4164 {
+  position: absolute;
+  top: 20rpx;
+  left: 20rpx;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  font-size: 22rpx;
+  padding: 6rpx 18rpx;
+  border-radius: 8rpx;
+  -webkit-backdrop-filter: blur(8rpx);
+          backdrop-filter: blur(8rpx);
+}
+.card-info.data-v-f64c4164 {
+  padding: 24rpx 28rpx 28rpx;
+}
+.card-title.data-v-f64c4164 {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #2E3D2E;
+  margin-bottom: 12rpx;
+}
+.card-brief.data-v-f64c4164 {
+  font-size: 26rpx;
+  color: #888;
+  line-height: 1.6;
+  margin-bottom: 18rpx;
+}
+.card-meta.data-v-f64c4164 {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 16rpx;
+  border-top: 1rpx solid #F0F0F0;
+}
+.meta-item.data-v-f64c4164 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6rpx;
+}
+.meta-label.data-v-f64c4164 {
+  font-size: 20rpx;
+  color: #B0B0B0;
+}
+.star.data-v-f64c4164 {
+  font-size: 24rpx;
+  color: #C8A84E;
+}
+.duration.data-v-f64c4164 {
+  font-size: 24rpx;
+  color: #888;
+}

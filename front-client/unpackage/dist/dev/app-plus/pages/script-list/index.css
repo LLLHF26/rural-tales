@@ -1,0 +1,259 @@
+/**
+ * 这里是uni-app内置的常用样式变量
+ *
+ * uni-app 官方扩展插件及插件市场（https://ext.dcloud.net.cn）上很多三方插件均使用了这些样式变量
+ * 如果你是插件开发者，建议你使用scss预处理，并在插件代码中直接使用这些变量（无需 import 这个文件），方便用户通过搭积木的方式开发整体风格一致的App
+ *
+ */
+/**
+ * 如果你是App开发者（插件使用者），你可以通过修改这些变量来定制自己的插件主题，实现自定义主题功能
+ *
+ * 如果你的项目同样使用了scss预处理，你也可以直接在你的 scss 代码中使用如下变量，同时无需 import 这个文件
+ */
+/* 颜色变量 */
+/* 行为相关颜色 */
+/* 文字基本颜色 */
+/* 背景颜色 */
+/* 边框颜色 */
+/* 尺寸变量 */
+/* 文字尺寸 */
+/* 图片尺寸 */
+/* Border Radius */
+/* 水平间距 */
+/* 垂直间距 */
+/* 透明度 */
+/* 文章场景相关 */
+.script-card[data-v-f64c4164] {
+  background: #fff;
+  border-radius: 0.625rem;
+  overflow: hidden;
+  box-shadow: 0 0.125rem 0.625rem rgba(0, 0, 0, 0.06);
+  margin-bottom: 0.875rem;
+  position: relative;
+}
+.script-card[data-v-f64c4164]:active {
+  transform: scale(0.98);
+}
+.card-cover[data-v-f64c4164] {
+  width: 100%;
+  height: 9.375rem;
+}
+.card-badge[data-v-f64c4164] {
+  position: absolute;
+  top: 0.625rem;
+  left: 0.625rem;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  font-size: 0.6875rem;
+  padding: 0.1875rem 0.5625rem;
+  border-radius: 0.25rem;
+  -webkit-backdrop-filter: blur(0.25rem);
+          backdrop-filter: blur(0.25rem);
+}
+.card-info[data-v-f64c4164] {
+  padding: 0.75rem 0.875rem 0.875rem;
+}
+.card-title[data-v-f64c4164] {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2E3D2E;
+  margin-bottom: 0.375rem;
+}
+.card-brief[data-v-f64c4164] {
+  font-size: 0.8125rem;
+  color: #888;
+  line-height: 1.6;
+  margin-bottom: 0.5625rem;
+}
+.card-meta[data-v-f64c4164] {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 0.5rem;
+  border-top: 0.03125rem solid #F0F0F0;
+}
+.meta-item[data-v-f64c4164] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.1875rem;
+}
+.meta-label[data-v-f64c4164] {
+  font-size: 0.625rem;
+  color: #B0B0B0;
+}
+.star[data-v-f64c4164] {
+  font-size: 0.75rem;
+  color: #C8A84E;
+}
+.duration[data-v-f64c4164] {
+  font-size: 0.75rem;
+  color: #888;
+}
+/**
+ * 这里是uni-app内置的常用样式变量
+ *
+ * uni-app 官方扩展插件及插件市场（https://ext.dcloud.net.cn）上很多三方插件均使用了这些样式变量
+ * 如果你是插件开发者，建议你使用scss预处理，并在插件代码中直接使用这些变量（无需 import 这个文件），方便用户通过搭积木的方式开发整体风格一致的App
+ *
+ */
+/**
+ * 如果你是App开发者（插件使用者），你可以通过修改这些变量来定制自己的插件主题，实现自定义主题功能
+ *
+ * 如果你的项目同样使用了scss预处理，你也可以直接在你的 scss 代码中使用如下变量，同时无需 import 这个文件
+ */
+/* 颜色变量 */
+/* 行为相关颜色 */
+/* 文字基本颜色 */
+/* 背景颜色 */
+/* 边框颜色 */
+/* 尺寸变量 */
+/* 文字尺寸 */
+/* 图片尺寸 */
+/* Border Radius */
+/* 水平间距 */
+/* 垂直间距 */
+/* 透明度 */
+/* 文章场景相关 */
+.list-page[data-v-c761630b] {
+  height: 100%;
+  width: 100%;
+  background: #F5F6F0;
+  display: flex;
+  flex-direction: column;
+}
+.search-bar[data-v-c761630b] {
+  padding: 0.75rem 0.9375rem 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.search-input[data-v-c761630b] {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 1.375rem;
+  padding: 0.5625rem 1rem;
+  box-shadow: 0 0.0625rem 0.5rem rgba(0, 0, 0, 0.06);
+}
+.search-input uni-input[data-v-c761630b] {
+  flex: 1;
+  font-size: 0.875rem;
+  margin-left: 0.4375rem;
+  color: #333;
+}
+.search-icon[data-v-c761630b] {
+  font-size: 0.9375rem;
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+.search-clear[data-v-c761630b] {
+  font-size: 0.8125rem;
+  color: #B0B0B0;
+  padding: 0.1875rem;
+  margin-left: 0.25rem;
+  flex-shrink: 0;
+}
+.search-btn[data-v-c761630b] {
+  flex-shrink: 0;
+  background: #5C7A5C;
+  color: #fff;
+  font-size: 0.875rem;
+  padding: 0.5625rem 1rem;
+  border-radius: 1.375rem;
+  font-weight: 500;
+  box-shadow: 0 0.0625rem 0.375rem rgba(92, 122, 92, 0.3);
+}
+.search-btn[data-v-c761630b]:active {
+  opacity: 0.85;
+}
+.filter-bar[data-v-c761630b] {
+  display: flex;
+  padding: 0 0.9375rem 0.75rem;
+  gap: 0.5rem;
+}
+.filter-item[data-v-c761630b] {
+  flex: 1;
+  text-align: center;
+  font-size: 0.8125rem;
+  color: #666;
+  background: #fff;
+  padding: 0.5rem 0;
+  border-radius: 0.375rem;
+  box-shadow: 0 0.0625rem 0.375rem rgba(0, 0, 0, 0.04);
+  transition: all 0.2s ease;
+}
+.filter-item.active[data-v-c761630b] {
+  background: #5C7A5C;
+  color: #fff;
+  font-weight: 500;
+}
+.filter-arrow[data-v-c761630b] {
+  font-size: 0.625rem;
+  margin-left: 0.1875rem;
+}
+.list-scroll[data-v-c761630b] {
+  flex: 1;
+  height: 0;
+}
+.list-scroll-inner[data-v-c761630b] {
+  padding: 0 0.9375rem;
+}
+.status-text[data-v-c761630b] {
+  text-align: center;
+  padding: 1.5rem 0;
+  color: #B0B0B0;
+  font-size: 0.8125rem;
+}
+.popup-overlay[data-v-c761630b] {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 999;
+  display: flex;
+  align-items: flex-end;
+}
+.popup-panel[data-v-c761630b] {
+  width: 100%;
+  background: #fff;
+  border-radius: 1.125rem 1.125rem 0 0;
+  padding: 1.125rem 0.9375rem 1.5rem;
+  animation: slideUp-c761630b 0.3s ease;
+}
+@keyframes slideUp-c761630b {
+from {
+    transform: translateY(100%);
+}
+to {
+    transform: translateY(0);
+}
+}
+.popup-header[data-v-c761630b] {
+  margin-bottom: 1rem;
+}
+.popup-title[data-v-c761630b] {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: #3D5A3D;
+}
+.popup-close[data-v-c761630b] {
+  font-size: 1.125rem;
+  color: #B0B0B0;
+  padding: 0.25rem;
+}
+.type-option[data-v-c761630b] {
+  padding: 0.875rem 1rem;
+  font-size: 0.875rem;
+  color: #555;
+  border-radius: 0.5rem;
+  margin-bottom: 0.4375rem;
+  background: #F5F6F0;
+  transition: all 0.2s ease;
+}
+.type-option.active[data-v-c761630b] {
+  background: #6B8E6B;
+  color: #fff;
+}

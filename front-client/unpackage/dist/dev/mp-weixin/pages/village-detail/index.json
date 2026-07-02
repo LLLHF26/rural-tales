@@ -1,0 +1,6 @@
+{
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "script-card": "../../components/script-card"
+  }
+}

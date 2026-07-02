@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "剧本列表",
+  "navigationBarBackgroundColor": "#F1F8E9",
+  "navigationBarTextStyle": "black",
+  "usingComponents": {
+    "script-card": "../../components/script-card"
+  }
+}

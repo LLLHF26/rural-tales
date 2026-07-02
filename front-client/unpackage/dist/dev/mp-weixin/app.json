@@ -1,0 +1,54 @@
+{
+  "pages": [
+    "pages/login/index",
+    "pages/login/password",
+    "pages/index/index",
+    "pages/village-list/index",
+    "pages/village-detail/index",
+    "pages/script-list/index",
+    "pages/script-detail/index",
+    "pages/play/index",
+    "pages/chat/index",
+    "pages/ar-scan/index",
+    "pages/my/index"
+  ],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "乡村剧本",
+    "navigationBarBackgroundColor": "#F1F8E9",
+    "backgroundColor": "#F1F8E9"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#4CAF50",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "static/home.png",
+        "selectedIconPath": "static/home-active.png"
+      },
+      {
+        "pagePath": "pages/village-list/index",
+        "text": "村庄",
+        "iconPath": "static/village.png",
+        "selectedIconPath": "static/village-active.png"
+      },
+      {
+        "pagePath": "pages/script-list/index",
+        "text": "剧本",
+        "iconPath": "static/script.png",
+        "selectedIconPath": "static/script-active.png"
+      },
+      {
+        "pagePath": "pages/my/index",
+        "text": "我的信息",
+        "iconPath": "static/my.png",
+        "selectedIconPath": "static/my-active.png"
+      }
+    ]
+  },
+  "usingComponents": {}
+}
