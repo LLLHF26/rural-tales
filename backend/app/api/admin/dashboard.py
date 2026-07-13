@@ -26,6 +26,18 @@ async def overview(db: AsyncSession = Depends(get_db), admin=Depends(get_current
     exp_count = (await db.execute(select(func.count()).select_from(ScriptProgress))).scalar()
     avg_rating = (await db.execute(select(func.avg(Rating.rating)).select_from(Rating))).scalar() or 0
 
+    # 自动修复：有 completed_ending_id 但 status 仍为 playing 的记录
+    orphaned = (await db.execute(select(ScriptProgress).where(
+        ScriptProgress.completed_ending_id.isnot(None),
+        ScriptProgress.status != "completed"
+    ))).scalars().all()
+    if orphaned:
+        for p in orphaned:
+            p.status = "completed"
+            if not p.completed_at:
+                p.completed_at = p.updated_at
+        await db.commit()
+
     today = tz_now().replace(hour=0, minute=0, second=0, microsecond=0)
     today_exp = (await db.execute(select(func.count()).select_from(ScriptProgress).where(ScriptProgress.started_at >= today))).scalar()
     today_complete = (await db.execute(select(func.count()).select_from(ScriptProgress).where(

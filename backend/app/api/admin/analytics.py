@@ -2,6 +2,7 @@
 
 from fastapi import APIRouter, Depends, Query
 from sqlalchemy.ext.asyncio import AsyncSession
+from datetime import timedelta
 from sqlalchemy import select, func, case, text
 from sqlalchemy.orm import selectinload
 
@@ -89,12 +90,16 @@ async def node_funnel(script_id: int, db: AsyncSession = Depends(get_db), admin:
 
     for node in nodes_list:
         node_id_str = str(node.id)
-        # Count progresses that have this node in completed_node_ids
+        # 统计到达过该节点的进度数：completed_node_ids 包含该节点，或 current_node_id 等于该节点
+        from sqlalchemy import or_
         enter_count = await db.execute(
             select(func.count(ScriptProgress.id)).where(
                 ScriptProgress.script_id == script_id,
-                ScriptProgress.completed_node_ids.contains([node_id_str])
-            )
+                or_(
+                    text("JSON_CONTAINS(completed_node_ids, :nid)"),
+                    ScriptProgress.current_node_id == node.id,
+                ),
+            ).params(nid=f'"{node_id_str}"')
         )
         enter = enter_count.scalar() or 0
 
@@ -132,30 +137,49 @@ async def task_stats(script_id: int, db: AsyncSession = Depends(get_db), admin: 
 
 @router.get("/user-profile")
 async def user_profile(db: AsyncSession = Depends(get_db), admin: Admin = Depends(get_current_admin)):
+    from app.utils.timezone import tz_now
     total_result = await db.execute(select(func.count(User.id)))
     total_users = total_result.scalar() or 0
 
-    # active users (hardcoded — 需要 Redis 会话统计)
-    progress_result = await db.execute(select(func.count(func.distinct(ScriptProgress.user_id))))
-    active_users = progress_result.scalar() or 0
+    now = tz_now()
+    d7 = now - timedelta(days=7)
+    d30 = now - timedelta(days=30)
 
-    # script type distribution
-    mystery_count = (await db.execute(select(func.count(Script.id)).where(Script.type == "mystery"))).scalar() or 0
-    history_count = (await db.execute(select(func.count(Script.id)).where(Script.type == "history"))).scalar() or 0
-    family_count = (await db.execute(select(func.count(Script.id)).where(Script.type == "family"))).scalar() or 0
-    total_scripts = mystery_count + history_count + family_count
+    # 活跃用户：按最近有进度记录统计
+    active_7d = (await db.execute(
+        select(func.count(func.distinct(ScriptProgress.user_id))).where(ScriptProgress.updated_at >= d7)
+    )).scalar() or 0
+    active_30d = (await db.execute(
+        select(func.count(func.distinct(ScriptProgress.user_id))).where(ScriptProgress.updated_at >= d30)
+    )).scalar() or 0
+
+    # 人均剧本数
+    total_experiences = (await db.execute(select(func.count(ScriptProgress.id)))).scalar() or 0
+    avg_script = round(total_experiences / max(total_users, 1), 1)
+
+    # 人均评分次数
+    total_ratings = (await db.execute(select(func.count(Rating.id)))).scalar() or 0
+    avg_rating = round(total_ratings / max(total_users, 1), 1)
+
+    # script type distribution — based on user experience records, not script count
+    type_rows = (await db.execute(
+        select(Script.type, func.count(ScriptProgress.id))
+        .join(Script, Script.id == ScriptProgress.script_id)
+        .group_by(Script.type)
+    )).all()
+    type_map = {row[0]: row[1] for row in type_rows if row[0]}
+    total_type_exp = sum(type_map.values())
 
     return ok({
         "totalUsers": total_users,
-        "activeUsers7d": active_users,
-        "activeUsers30d": active_users,
+        "activeUsers7d": active_7d,
+        "activeUsers30d": active_30d,
         "scriptTypeDistribution": {
-            "mystery": round(mystery_count / max(total_scripts, 1), 2),
-            "history": round(history_count / max(total_scripts, 1), 2),
-            "family": round(family_count / max(total_scripts, 1), 2),
+            k: round(v / max(total_type_exp, 1), 2)
+            for k, v in type_map.items()
         },
-        "avgScriptPerUser": 0,
-        "avgRatingPerUser": 0,
+        "avgScriptPerUser": avg_script,
+        "avgRatingPerUser": avg_rating,
     })
 
 

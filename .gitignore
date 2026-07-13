@@ -1,0 +1,29 @@
+# 环境配置（含密钥）
+.env
+*.env
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+*.egg
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# 测试
+.pytest_cache/
+
+# 临时文件
+*.tmp
+*.log

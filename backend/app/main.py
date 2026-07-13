@@ -1,5 +1,6 @@
 """FastAPI 应用入口"""
 
+import mimetypes
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
@@ -11,6 +12,10 @@ from app.config import settings
 from app.database import engine, Base, get_redis, _redis
 from app.api.admin.router import admin_router
 from app.api.mobile.router import mobile_router
+
+# 注册 .glb/.gltf 的 MIME 类型，否则按 text/plain 返回，A-Frame 无法加载模型
+mimetypes.add_type("model/gltf-binary", ".glb")
+mimetypes.add_type("model/gltf+json", ".gltf")
 
 
 @asynccontextmanager
@@ -36,7 +41,18 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[
+        "http://localhost:8080",
+        "http://127.0.0.1:8080",
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        "http://localhost:8081",
+        "http://127.0.0.1:8081",
+        "http://localhost:8082",
+        "http://127.0.0.1:8082",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

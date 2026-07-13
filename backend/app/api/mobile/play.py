@@ -93,16 +93,26 @@ async def get_current_node(progress_id: int, db: AsyncSession = Depends(get_db),
             if next_node:
                 data["nextNodes"] = [next_node.id]
 
-    # 结局节点：查找对应的结局信息
+    # 结局节点：匹配对应的结局
     if node.type == "ending":
         ending_id = node.config.get("endingId") if node.config else None
         ending = None
         if ending_id:
             ending = (await db.execute(select(ScriptEnding).where(ScriptEnding.id == ending_id, ScriptEnding.script_id == progress.script_id))).scalar_one_or_none()
         if not ending:
-            ending = (await db.execute(
-                select(ScriptEnding).where(ScriptEnding.script_id == progress.script_id).limit(1)
-            )).scalars().first()
+            # 按位置匹配：结局节点按 sort_order 排列，对应结局按 id 排列
+            all_endings = (await db.execute(
+                select(ScriptEnding).where(ScriptEnding.script_id == progress.script_id).order_by(ScriptEnding.id)
+            )).scalars().all()
+            all_ending_nodes = (await db.execute(
+                select(ScriptNode).where(ScriptNode.script_id == progress.script_id, ScriptNode.type == "ending").order_by(ScriptNode.sort_order)
+            )).scalars().all()
+            # 找到当前节点在结局节点列表中的位置
+            node_idx = next((i for i, n in enumerate(all_ending_nodes) if n.id == node.id), 0)
+            if node_idx < len(all_endings):
+                ending = all_endings[node_idx]
+            elif all_endings:
+                ending = all_endings[0]
         if ending:
             data["ending"] = {
                 "endingId": str(ending.id), "title": ending.title,
@@ -149,6 +159,15 @@ async def opening(progress_id: int, db: AsyncSession = Depends(get_db), user=Dep
         opening_message += f"\n场景信息：{node.dialogue_prompt}"
     if script:
         opening_message += f"\n剧本背景：{script.storyline[:200] if script.storyline else '无'}"
+
+    # 告知 AI 当前可用的任务，引导其在开场白中自然提及
+    if node.tasks:
+        task_hints = []
+        for t in node.tasks:
+            if str(t.id) not in (progress.completed_task_ids or []):
+                task_hints.append(f"「{t.title}」（{t.type}）")
+        if task_hints:
+            opening_message += f"\n当前可用任务：{'、'.join(task_hints)}。请在打招呼时自然地引导游客去完成这些任务，比如'你可以先去XXX看看'。"
 
     return StreamingResponse(
         stream_npc_chat(db, progress_id, npc.id, opening_message, node.id),
@@ -336,6 +355,11 @@ async def advance_node(progress_id: int, req: AdvanceNodeReq, db: AsyncSession =
     if not progress: return fail(2001, "进度不存在")
 
     progress.current_node_id = req.nextNodeId
+    # 将新节点加入已完成列表
+    completed = list(progress.completed_node_ids or [])
+    if str(req.nextNodeId) not in completed:
+        completed.append(str(req.nextNodeId))
+    progress.completed_node_ids = completed
     logger.info(f"advance_node: progress_id={progress_id} → node_id={req.nextNodeId}")
     return ok({"nextNodeId": str(req.nextNodeId)})
 
@@ -388,6 +412,7 @@ async def reach_ending(progress_id: int, req: EndingReq,
     p.status = "completed"
     p.completed_at = tz_now()
     p.completed_ending_id = req.endingId
+    await db.commit()
     duration_seconds = int((p.completed_at - p.started_at).total_seconds()) if p.started_at else 0
 
     all_endings = (await db.execute(select(ScriptEnding).where(ScriptEnding.script_id == p.script_id))).scalars().all()

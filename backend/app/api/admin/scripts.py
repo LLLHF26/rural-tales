@@ -240,6 +240,23 @@ async def get_node(script_id: int, node_id: int, db: AsyncSession = Depends(get_
     })
 
 
+@router.get("/{script_id}/chapters/{chapter_id}/nodes")
+async def list_nodes(script_id: int, chapter_id: int, db: AsyncSession = Depends(get_db), admin=Depends(get_current_admin)):
+    nodes = (await db.execute(
+        select(ScriptNode).where(
+            ScriptNode.script_id == script_id,
+            ScriptNode.chapter_id == chapter_id
+        ).order_by(ScriptNode.sort_order)
+    )).scalars().all()
+    return ok({"list": [{
+        "nodeId": str(n.id), "title": n.title, "type": n.type,
+        "chapterId": str(n.chapter_id), "sceneImage": n.scene_image, "sceneAudio": n.scene_audio,
+        "triggerType": n.trigger_type, "triggerLat": n.trigger_lat, "triggerLng": n.trigger_lng,
+        "triggerRadius": n.trigger_radius, "dialoguePrompt": n.dialogue_prompt,
+        "npcId": str(n.npc_id) if n.npc_id else None, "config": n.config, "sortOrder": n.sort_order,
+    } for n in nodes]})
+
+
 @router.post("/{script_id}/chapters/{chapter_id}/nodes")
 async def create_node(script_id: int, chapter_id: int, req: NodeReq, db: AsyncSession = Depends(get_db), admin=Depends(get_current_admin)):
     if not req.title: return fail(4001, "title为必填字段")

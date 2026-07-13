@@ -144,8 +144,8 @@
             </view>
           </view>
 
-          <!-- 选择按钮 -->
-          <view class="choice-row" v-if="msg.choices">
+          <!-- 选择按钮（分支面板已显示时隐藏，避免重复） -->
+          <view class="choice-row" v-if="msg.choices && !showBranchPanel">
             <view class="choice-btn" v-for="ch in msg.choices" :key="ch.id" @tap="handleChoice(ch)">
               {{ ch.label }}
             </view>
@@ -162,7 +162,7 @@
     </scroll-view>
 
     <!-- 分支选择面板 -->
-    <view class="branch-panel" v-if="_showBranchPanel && nodeData?.hasBranch && nodeData?.branchOptions?.length && !_nextNodeId">
+    <view class="branch-panel" v-if="showBranchPanel">
       <text class="branch-panel-title">🔀 {{ nodeData.branchPrompt || '请做出选择' }}</text>
       <view class="branch-option" v-for="opt in nodeData.branchOptions" :key="opt.id" @tap="handleChoice(opt)">
         <text class="branch-option-label">{{ opt.label }}</text>
@@ -170,8 +170,8 @@
       </view>
     </view>
 
-    <!-- 前往下一节 -->
-    <view class="next-node-bar" @tap="goToNextNode">
+    <!-- 前往下一节（有分支且未选择时隐藏，让用户先选分支） -->
+    <view class="next-node-bar" @tap="goToNextNode" v-if="!showBranchPanel">
       <text class="next-node-icon">▶</text>
       <text class="next-node-text">前往下一节</text>
     </view>
@@ -243,12 +243,13 @@ export default {
       selectedItem: null,
       showNextButton: false,
       _nextNodeId: null,
-      _showBranchPanel: false,
+      _branchReady: false,
       showEnding: false,
       endingData: null,
       userRating: 0,
       ratingSubmitted: false,
-      _bgAudioCtx: null
+      _bgAudioCtx: null,
+      _arUsed: false
     }
   },
   computed: {
@@ -277,16 +278,105 @@ export default {
     },
     hasNextNode() {
       return this.nodeData?.nextNodes?.length > 0
+    },
+    showBranchPanel() {
+      return this.nodeData?.hasBranch
+        && this.nodeData?.branchOptions?.length
+        && this.allCurrentTasksDone
+        && !this._nextNodeId
+        && this._branchReady
     }
   },
   onLoad(options) {
     this.progressId = options.progressId
     this.loadNodeAndStart()
   },
+  onShow() {
+    // 从 AR 等页面返回时，恢复布局并刷新数据
+    this._resetLayout()
+    if (this.progressId) {
+      this.loadNodeAndUpdate()
+    }
+  },
+  onHide() {
+    // 离开页面时清理 body 样式，防止 A-Frame 残留影响其他页面
+    this._resetLayout()
+  },
   onUnload() {
     this.stopSceneAudio()
   },
   methods: {
+    _resetLayout() {
+      if (!this._arUsed) {
+        if (this.streaming) this.streaming = false
+        return
+      }
+      // 从 AR 页面返回后，兜底恢复布局
+      // destroyAR 已在 AR 页面 onHide 中执行，这里做最终清理
+      const fix = () => {
+        try {
+          // 1. 移除所有残留的 AR/A-Frame 元素
+          document.querySelectorAll('#__ar_scene_root__, .a-canvas, canvas[data-aframe], .a-enter-vr, .a-enter-ar, .a-loading-screen').forEach(el => {
+            try { el.remove() } catch (e) {}
+          })
+          // 2. 停止残留的相机流
+          Array.from(document.querySelectorAll('video')).forEach(v => {
+            try {
+              if (v.srcObject) {
+                v.srcObject.getTracks().forEach(t => { try { t.stop() } catch (e) {} })
+                v.srcObject = null
+              }
+              v.pause()
+            } catch (e) {}
+          })
+          // 3. 移除 A-Frame 注入的 <style> 标签
+          document.querySelectorAll('style').forEach(s => {
+            const txt = s.textContent || ''
+            if (txt.includes('a-scene') || txt.includes('a-canvas') || txt.includes('.a-body') ||
+                txt.includes('.a-enter-vr') || txt.includes('a-fullscreen') || txt.includes('a-hidden')) {
+              try { s.remove() } catch (e) {}
+            }
+          })
+          // 4. 删除 stylesheet 中的 A-Frame 规则
+          try {
+            for (const sheet of Array.from(document.styleSheets)) {
+              if (!sheet.cssRules) continue
+              try {
+                const toDelete = []
+                for (let i = 0; i < sheet.cssRules.length; i++) {
+                  const sel = sheet.cssRules[i].selectorText || ''
+                  if (sel.includes('a-scene') || sel.includes('a-canvas') || sel.includes('a-entity') ||
+                      sel.includes('.a-body') || sel.includes('a-assets') || sel.includes('.a-enter-vr') ||
+                      sel.includes('a-fullscreen') || sel.includes('a-hidden') || sel.includes('a-loader')) {
+                    toDelete.push(i)
+                  }
+                }
+                for (let i = toDelete.length - 1; i >= 0; i--) {
+                  try { sheet.deleteRule(toDelete[i]) } catch (e) {}
+                }
+              } catch (e) {}
+            }
+          } catch (e) {}
+          // 5. 完全重置 body/html 内联样式和类名
+          document.body.style.cssText = ''
+          document.body.className = ''
+          const html = document.documentElement
+          html.style.cssText = ''
+          html.className = ''
+          html.style.setProperty('overflow', 'auto', 'important')
+          // 6. 强制 reflow
+          void document.body.offsetHeight
+          void html.offsetHeight
+          const w = html.clientWidth
+          if (w > 0) html.style.fontSize = w / 375 * 20 + 'px'
+          window.dispatchEvent(new Event('resize'))
+        } catch (e) {}
+      }
+      fix()
+      setTimeout(fix, 100)
+      setTimeout(fix, 300)
+      if (this.streaming) this.streaming = false
+    },
     async loadNodeAndStart() {
       try {
         this.nodeData = await playApi.getCurrentNode(this.progressId)
@@ -359,32 +449,47 @@ export default {
       const token = uni.getStorageSync('token')
       const url = `${BASE_URL}/play/${this.progressId}/opening`
 
-      uni.request({
-        url,
-        method: 'POST',
-        header: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-          Accept: 'text/event-stream'
-        },
-        responseType: 'text',
-        success: (res) => {
-          this.parseSSE(res.data || '')
-          this.streaming = false
-          this.ensureHint()
-          this.saveHistory()
-          this.checkEnding()
-        },
-        fail: () => {
-          if (this.nodeData?.npc?.greeting && this.messages.length === 0) {
-            this.messages.push({ role: 'npc', text: this.nodeData.npc.greeting })
-          }
-          this.streaming = false
-          this.ensureHint()
-          this.saveHistory()
-          this.checkEnding()
+      this._sseRequest(url, {}, (text) => {
+        this.parseSSE(text)
+        this.streaming = false
+        this.ensureHint()
+        this.saveHistory()
+        this.checkEnding()
+        this._branchReady = true
+      }, () => {
+        if (this.nodeData?.npc?.greeting && this.messages.length === 0) {
+          this.messages.push({ role: 'npc', text: this.nodeData.npc.greeting })
         }
+        this.streaming = false
+        this.ensureHint()
+        this.saveHistory()
+        this.checkEnding()
+        this._branchReady = true
       })
+    },
+
+    _sseRequest(url, data, onSuccess, onFail) {
+      const token = uni.getStorageSync('token')
+      // 使用原生 XMLHttpRequest 确保 SSE 文本不被自动解析
+      try {
+        const xhr = new XMLHttpRequest()
+        xhr.open('POST', url, true)
+        xhr.setRequestHeader('Content-Type', 'application/json')
+        xhr.setRequestHeader('Authorization', `Bearer ${token}`)
+        xhr.setRequestHeader('Accept', 'text/event-stream')
+        xhr.responseType = 'text'
+        xhr.onload = () => {
+          if (xhr.status >= 200 && xhr.status < 300) {
+            onSuccess(xhr.responseText || '')
+          } else {
+            onFail()
+          }
+        }
+        xhr.onerror = () => onFail()
+        xhr.send(JSON.stringify(data))
+      } catch (e) {
+        onFail()
+      }
     },
 
     async checkEnding() {
@@ -422,35 +527,34 @@ export default {
       this.scrollToBottom()
       this.saveHistory()
 
-      const token = uni.getStorageSync('token')
       const url = `${BASE_URL}/play/${this.progressId}/chat`
 
-      uni.request({
-        url,
-        method: 'POST',
-        header: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-          Accept: 'text/event-stream'
-        },
-        data: { npcId, message: text, nodeId },
-        responseType: 'text',
-        success: (res) => {
-          this.parseSSE(res.data || '')
-          this.streaming = false
-          this.ensureHint()
-          this.saveHistory()
-        },
-        fail: () => {
-          this.streaming = false
-          this.ensureHint()
-          this.saveHistory()
-        }
+      this._sseRequest(url, { npcId, message: text, nodeId }, (data) => {
+        this.parseSSE(data)
+        this.streaming = false
+        this.ensureHint()
+        this.saveHistory()
+      }, () => {
+        this.streaming = false
+        this.ensureHint()
+        this.saveHistory()
       })
     },
 
     parseSSE(text) {
       if (!text) return
+      if (typeof text !== 'string') {
+        // uni-app 可能自动解析了 JSON 响应（非 SSE 格式）
+        if (typeof text === 'object' && text.text) {
+          const last = this.messages[this.messages.length - 1]
+          if (last && last.role === 'npc') {
+            last.text += text.text
+          } else {
+            this.messages.push({ role: 'npc', text: text.text })
+          }
+        }
+        return
+      }
       const lines = text.split('\n')
       let currentEvent = ''
       for (const line of lines) {
@@ -562,9 +666,13 @@ export default {
         }
         if (oldNodeId && this.nodeId && oldNodeId !== this.nodeId) {
           this.playSceneAudio(this.nodeData.sceneAudio)
+          // 节点切换时重置状态
+          this.showNextButton = false
+          this._nextNodeId = null
+          this._branchReady = false
         }
-        // 节点切换后自动触发新场景的开场叙事（如果有"前往下一节"按钮则等待用户点击）
-        if (oldNodeId && this.nodeId && oldNodeId !== this.nodeId && !this.showNextButton) {
+        // 节点切换后自动触发新场景的开场叙事
+        if (oldNodeId && this.nodeId && oldNodeId !== this.nodeId) {
           this.$nextTick(() => this.triggerOpening())
         }
       } catch (e) {}
@@ -593,6 +701,7 @@ export default {
       } else if (task.type === 'choice') {
         this.submitTask(task)
       } else if (task.type === 'ar_scan') {
+        this._arUsed = true
         uni.navigateTo({
           url: `/pages/ar-scan/index?progressId=${this.progressId}&taskId=${task.taskId}&nodeId=${this.nodeId}`
         })
@@ -699,7 +808,7 @@ export default {
       }
       this.showNextButton = false
       this._nextNodeId = null
-      this._showBranchPanel = false
+      this._branchReady = false
       try {
         await playApi.advanceNode(this.progressId, nextNodeId)
         this.messages = []
@@ -723,40 +832,22 @@ export default {
         const optionLabels = this.nodeData.branchOptions.map(o => o.label).join('、')
         extraHint = `当前节点所有任务已全部完成，请引导游客在以下选项中做出选择：${optionLabels}。你必须在回复末尾使用 [CHOICE:选项ID] 标记触发分支选择。`
       }
-      uni.request({
-        url,
-        method: 'POST',
-        header: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-          Accept: 'text/event-stream'
-        },
-        data: {
-          npcId,
-          nodeId,
-          message: `[系统通知] 游客刚刚完成了任务「${taskTitle}」。请你对此做出反应，夸赞或鼓励游客，并根据当前剧情自然地引导下一步行动。${extraHint}`
-        },
-        responseType: 'text',
-        success: (res) => {
-          this.parseSSE(res.data || '')
-          this.streaming = false
-          this.ensureHint()
-          this.saveHistory()
-          this.showBranchAfterAI()
-        },
-        fail: () => {
-          this.streaming = false
-          this.saveHistory()
-          this.showBranchAfterAI()
-        }
+      this._sseRequest(url, {
+        npcId,
+        nodeId,
+        message: `[系统通知] 游客刚刚完成了任务「${taskTitle}」。请你对此做出反应，夸赞或鼓励游客，并根据当前剧情自然地引导下一步行动。${extraHint}`
+      }, (data) => {
+        this.parseSSE(data)
+        this.streaming = false
+        this.ensureHint()
+        this.saveHistory()
+        this._branchReady = true
+      }, () => {
+        this.streaming = false
+        this.saveHistory()
+        this._branchReady = true
       })
     },
-    showBranchAfterAI() {
-      if (this.allCurrentTasksDone && this.nodeData?.hasBranch && this.nodeData?.branchOptions?.length) {
-        this._showBranchPanel = true
-      }
-    },
-
     async handleChoice(choice) {
       try {
         const result = await playApi.choose(this.progressId, this.nodeId, choice.id)

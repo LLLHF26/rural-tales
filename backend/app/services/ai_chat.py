@@ -59,7 +59,8 @@ def build_npc_system_prompt(npc: ScriptNpc, node: ScriptNode | None, progress: S
                       "\n- 当对话内容已经自然指向某个任务时（如游客问路对应GPS任务、游客想解谜对应puzzle任务），也要触发"
                       "\n- 格式示例：[TASK:1] （必须是上方列表中的任务ID数字）"
                       "\n- 每个回复最多触发一个任务"
-                      "\n- 闲聊、打招呼、了解背景故事时不要触发，正常交流即可")
+                      "\n- 闲聊、打招呼、了解背景故事时不要触发，正常交流即可"
+                      "\n- 你应该主动引导游客去完成任务，比如提到'你可以去祠堂看看'或'要不试试解这个谜题'，让游客产生意愿后自然触发")
 
     # 当前节点的分支选项
     if node and node.config and node.config.get("hasBranch"):
@@ -254,6 +255,40 @@ async def stream_npc_chat(
         clean_reply = task_pattern.sub('', clean_reply).strip()
         # 清理 AI 可能输出的各种不完整标记（无ID或ID不合法）
         clean_reply = re.sub(r'\[TASK[：:\s]*[^\]]*\]', '', clean_reply).strip()
+
+        # ---- 后端自动任务触发（不依赖 AI 输出 [TASK:N]）----
+        if node and node.tasks and not triggered_tasks:
+            completed_ids = set(progress.completed_task_ids or [])
+            pending_tasks = [t for t in node.tasks if str(t.id) not in completed_ids]
+            user_lower = user_message.lower()
+            # 关键词 → 任务类型/标题匹配
+            keyword_task_map = {
+                'gps_checkin': ['去', '走', '出发', '前往', '带路', '怎么走', '在哪', '哪里', '位置', '签到', '到达'],
+                'puzzle': ['谜题', '密码', '解谜', '答案', '线索', '暗语', '族谱', '破译', '试试', '挑战'],
+                'ar_scan': ['扫描', '扫码', 'ar', 'AR', '拍照识别', '牌匾'],
+                'photo': ['拍照', '合影', '照片', '拍一张'],
+                'choice': ['选择', '决定', '我选', '我要'],
+            }
+            for task in pending_tasks:
+                matched = False
+                # 按任务类型匹配关键词
+                type_keywords = keyword_task_map.get(task.type, [])
+                if any(kw in user_lower for kw in type_keywords):
+                    matched = True
+                # 按任务标题匹配（用户提到了任务名）
+                if task.title and len(task.title) >= 2:
+                    title_chars = set(task.title)
+                    overlap = sum(1 for c in user_message if c in title_chars)
+                    if overlap >= 2 and overlap / len(task.title) >= 0.4:
+                        matched = True
+                if matched:
+                    triggered_tasks.append({
+                        "taskId": str(task.id),
+                        "type": task.type,
+                        "title": task.title,
+                        "description": task.description or "",
+                    })
+                    break  # 每次最多触发一个任务
 
         # 检测 AI 回复中的分支选择触发标记
         triggered_choices = []

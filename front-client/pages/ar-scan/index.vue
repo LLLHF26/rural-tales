@@ -1,4 +1,4 @@
-﻿<!-- AR 扫描 —— ArUco标记检测 + 3D模型叠加 + 道具收集 -->
+<!-- AR 扫描 —— ArUco标记检测 + 3D模型叠加 + 道具收集 -->
 <template>
   <view class="ar-ui-overlay">
     <!-- 平台不支持提示 -->
@@ -49,13 +49,6 @@ import { BASE_URL_RAW } from '@/utils/config.js'
 let sceneRoot = null
 let cameraStream = null
 let videoEl = null
-let _destroyed = false
-let _savedViewportContent = null
-let _savedBodyOverflow = null
-let _savedHtmlOverflow = null
-let _savedBodyCssText = null
-let _savedHtmlCssText = null
-let _savedBodyClassName = null
 
 export default {
   data() {
@@ -86,6 +79,10 @@ export default {
     this.nodeId = options.nodeId || ''
     this.loadARResource()
   },
+  onHide() {
+    this._active = false
+    this.destroyAR()
+  },
   onUnload() {
     this._active = false
     this.destroyAR()
@@ -113,60 +110,49 @@ export default {
 
     async startModelAR() {
       try {
-        _destroyed = false
         this.statusText = '加载 AR 引擎…'
 
-        const vp = document.querySelector('meta[name="viewport"]')
-        _savedViewportContent = vp ? vp.getAttribute('content') : null
-        _savedBodyOverflow = document.body.style.overflow
-        _savedHtmlOverflow = document.documentElement.style.overflow
-        _savedBodyCssText = document.body.style.cssText
-        _savedHtmlCssText = document.documentElement.style.cssText
-        _savedBodyClassName = document.body.className
-
-        await this.loadScript('https://aframe.io/releases/1.2.0/aframe.min.js')
-        await this.loadScript('https://cdn.jsdelivr.net/npm/ar.js@2.2.2/aframe/build/aframe-ar.js')
+        await this.loadScript(BASE_URL_RAW + '/static/aframe.min.js')
+        await this.loadScript(BASE_URL_RAW + '/static/aframe-ar.js')
 
         if (!this._active) return
 
         this.statusText = '初始化场景…'
 
-        const arucoId = this.arData.arucoId != null ? this.arData.arucoId : 1
-        let pattUrl = BASE_URL_RAW + '/static/markers/marker_' + arucoId + '.patt'
-        if (this.arData.pattContent) {
-          try {
-            pattUrl = 'data:text/plain;base64,' + btoa(this.arData.pattContent)
-          } catch (e) {}
-        }
+        const defaultModel = BASE_URL_RAW + '/static/robot.glb'
+        const modelUrl = this.arData.modelUrl || defaultModel
+        const markerContent = '<a-entity gltf-model="url(' + modelUrl + ')" scale="0.5 0.5 0.5" position="0 0 0"></a-entity>'
 
-        let markerContent = ''
-        if (this.arData.modelUrl) {
-          markerContent = '<a-entity gltf-model="url(' + this.arData.modelUrl + ')" scale="0.5 0.5 0.5" position="0 0 0"></a-entity>'
-        } else {
-          markerContent = '<a-box position="0 0.5 0" material="color: #FF9800; roughness: 0.3"></a-box>'
-        }
+        const arucoId = this.arData?.arucoId != null ? this.arData.arucoId : null
+        const usePreset = arucoId == null
+        const arjsConfig = usePreset
+          ? 'sourceType: webcam; detectionMode: mono; patternRatio: 0.5;'
+          : 'sourceType: webcam; detectionMode: mono_and_matrix; matrixCodeType: 3x3;'
+        const markerTag = usePreset
+          ? '<a-marker preset="hiro">' + markerContent + '</a-marker>'
+          : '<a-marker type="barcode" value="' + arucoId + '">' + markerContent + '</a-marker>'
 
         sceneRoot = document.createElement('div')
         sceneRoot.id = '__ar_scene_root__'
         sceneRoot.innerHTML = [
           '<a-scene',
           '  renderer="alpha: true; antialias: true"',
-          '  arjs="sourceType: webcam; patternRatio: 0.5; debugUIEnabled: false;"',
+          '  arjs="' + arjsConfig + 'debugUIEnabled: false;"',
           '>',
-          '  <a-marker type="pattern" url="' + pattUrl + '">',
-          '    ' + markerContent,
-          '  </a-marker>',
+          '  ' + markerTag,
           '  <a-entity camera></a-entity>',
           '</a-scene>'
         ].join('\n')
         document.body.appendChild(sceneRoot)
 
-        await this.wait(600)
+        // 等待 scene 就绪后绑定 marker 事件
+        if (!this._active) return
+        await this.wait(800)
 
-        const scene = sceneRoot.querySelector('a-scene')
-        const bind = () => {
-          if (!this._active) return
-          const marker = sceneRoot.querySelector('a-marker')
+        if (!this._active || !sceneRoot) return
+
+        const tryBind = () => {
+          const marker = sceneRoot && sceneRoot.querySelector('a-marker')
           if (marker) {
             marker.addEventListener('markerFound', () => {
               this.markerFound = true
@@ -176,23 +162,44 @@ export default {
               this.markerFound = false
               this.statusText = '未检测到标记'
             })
+            return true
           }
-          this.arReady = true
-          this.statusText = '未检测到标记'
+          return false
         }
 
-        if (scene && scene.hasLoaded) {
-          bind()
-        } else if (scene) {
-          scene.addEventListener('loaded', bind)
+        // 尝试绑定，失败则轮询重试
+        if (!tryBind()) {
+          let retries = 0
+          await new Promise((resolve) => {
+            const check = () => {
+              retries++
+              if (!this._active || !sceneRoot || tryBind() || retries > 60) {
+                resolve()
+                return
+              }
+              setTimeout(check, 200)
+            }
+            setTimeout(check, 200)
+          })
         }
 
-        this._timer = setTimeout(() => {
-          if (this._active && !this.arReady) {
-            this.arError = 'AR 初始化超时，请检查相机权限'
-            this.destroyAR()
+        this.arReady = true
+        this.statusText = '未检测到标记'
+
+        // 诊断：检测 AR.js 创建的相机视频是否在播放
+        setTimeout(() => {
+          if (!this._active || this.markerFound) return
+          const videos = document.querySelectorAll('video')
+          let hasActiveVideo = false
+          videos.forEach(v => {
+            if (v.readyState >= 2 && v.videoWidth > 0) {
+              hasActiveVideo = true
+            }
+          })
+          if (!hasActiveVideo) {
+            this.statusText = '相机未启动，请确认已授权相机权限'
           }
-        }, 15000)
+        }, 2000)
       } catch (e) {
         console.error('AR启动失败:', e)
         this.destroyAR()
@@ -203,7 +210,6 @@ export default {
 
     async startCameraMode() {
       try {
-        _destroyed = false
         this.statusText = '启动相机…'
 
         sceneRoot = document.createElement('div')
@@ -242,89 +248,111 @@ export default {
 
     destroyAR() {
       if (typeof document === 'undefined') return
-      if (_destroyed) return
-      _destroyed = true
+
+      // 1. 停止所有相机流（包括 AR.js 创建的和手动创建的）
+      // 先停止手动管理的
       if (cameraStream) {
-        try { cameraStream.getTracks().forEach(t => t.stop()) } catch (e) {}
+        try {
+          cameraStream.getTracks().forEach(t => { try { t.stop() } catch (e) {} })
+        } catch (e) {}
         cameraStream = null
       }
-      videoEl = null
+      if (videoEl) {
+        try { videoEl.pause(); videoEl.srcObject = null } catch (e) {}
+        videoEl = null
+      }
+      // 停止页面上所有 video 元素的流（AR.js 创建的相机 video）
+      Array.from(document.querySelectorAll('video')).forEach(v => {
+        try {
+          if (v.srcObject) {
+            v.srcObject.getTracks().forEach(t => { try { t.stop() } catch (e) {} })
+            v.srcObject = null
+          }
+          v.pause()
+          v.remove()
+        } catch (e) {}
+      })
+
+      // 2. 移除 AR DOM 元素
       if (sceneRoot) {
         try { sceneRoot.remove() } catch (e) {}
         sceneRoot = null
       }
-      const old = document.getElementById('__ar_scene_root__')
-      if (old) { try { old.remove() } catch (e) {} }
+      document.querySelectorAll('#__ar_scene_root__').forEach(el => {
+        try { el.remove() } catch (e) {}
+      })
 
-      // 恢复 body className（A-Frame 添加了 a-fullscreen 等类）
-      if (_savedBodyClassName !== null) {
-        document.body.className = _savedBodyClassName
-        _savedBodyClassName = null
-      }
+      // 3. 移除 A-Frame canvas 和 overlay
+      document.querySelectorAll('.a-canvas, canvas[data-aframe], .a-enter-vr, .a-enter-ar, .a-loading-screen').forEach(el => {
+        try { el.remove() } catch (e) {}
+      })
 
-      // 恢复 body/html 内联样式
-      if (_savedBodyCssText !== null) {
-        document.body.style.cssText = _savedBodyCssText
-        _savedBodyCssText = null
-      } else {
-        document.body.style.overflow = _savedBodyOverflow || ''
-      }
-      if (_savedHtmlCssText !== null) {
-        document.documentElement.style.cssText = _savedHtmlCssText
-        _savedHtmlCssText = null
-      } else {
-        document.documentElement.style.overflow = _savedHtmlOverflow || ''
-      }
-      _savedBodyOverflow = null
-      _savedHtmlOverflow = null
-
-      // 激进恢复 viewport：移除旧标签并重新创建，强制浏览器重新解析
-      if (_savedViewportContent !== null) {
-        const oldVp = document.querySelector('meta[name="viewport"]')
-        if (oldVp) {
-          try { oldVp.remove() } catch (e) {}
-        }
-        const newVp = document.createElement('meta')
-        newVp.name = 'viewport'
-        newVp.content = _savedViewportContent
-        document.head.appendChild(newVp)
-        _savedViewportContent = null
-      }
-
-      // 移除 A-Frame 注入的 style 标签
+      // 4. 移除 A-Frame 注入的 <style> 标签
       document.querySelectorAll('style').forEach(s => {
         const txt = s.textContent || ''
-        if (txt.includes('a-scene') || txt.includes('a-canvas') || txt.includes('a-entity') || txt.includes('a-fullscreen') || txt.includes('.a-body') || txt.includes('a-assets')) {
+        if (txt.includes('a-scene') || txt.includes('a-canvas') || txt.includes('.a-body') ||
+            txt.includes('.a-enter-vr') || txt.includes('a-fullscreen') || txt.includes('a-hidden')) {
           try { s.remove() } catch (e) {}
         }
       })
 
-      document.querySelectorAll('a-scene canvas, .a-canvas').forEach(c => {
-        try { c.remove() } catch (e) {}
-      })
+      // 5. 删除 stylesheet 中 A-Frame 注入的 CSS 规则
+      this._cleanAFrameRules()
 
-      // 强制重新计算根字体大小（uni-app 响应式布局核心）
-      // 先触发重排，确保 clientWidth 正确反映恢复后的 viewport
+      // 6. 完全重置 body/html 内联样式和类名
+      //    A-Frame 会设 position:fixed / overflow:hidden / width:100% 等，必须完全清空
+      document.body.style.cssText = ''
+      document.body.className = ''
+      const html = document.documentElement
+      html.style.cssText = ''
+      html.className = ''
+      // 用 !important 覆盖可能残留的 stylesheet 规则
+      html.style.setProperty('overflow', 'auto', 'important')
+
+      // 7. 强制 reflow + 恢复根字体 + 触发 resize
       void document.body.offsetHeight
-      const clientWidth = document.documentElement.clientWidth
+      void html.offsetHeight
+      const clientWidth = html.clientWidth
       if (clientWidth > 0) {
-        document.documentElement.style.fontSize = clientWidth / 375 * 20 + 'px'
+        html.style.fontSize = clientWidth / 375 * 20 + 'px'
       }
-
-      // 派发 resize 事件，触发 uni-app 和其他监听器重新计算布局
-      try {
-        window.dispatchEvent(new Event('resize'))
-      } catch (e) {}
+      try { window.dispatchEvent(new Event('resize')) } catch (e) {}
 
       this.arReady = false
       this.markerFound = false
+    },
+
+    _cleanAFrameRules() {
+      try {
+        for (const sheet of Array.from(document.styleSheets)) {
+          if (!sheet.cssRules) continue
+          try {
+            const toDelete = []
+            for (let i = 0; i < sheet.cssRules.length; i++) {
+              const rule = sheet.cssRules[i]
+              if (!rule.selectorText) continue
+              const sel = rule.selectorText
+              if (sel.includes('a-scene') || sel.includes('a-canvas') || sel.includes('a-entity') ||
+                  sel.includes('.a-body') || sel.includes('a-assets') || sel.includes('.a-enter-vr') ||
+                  sel.includes('a-fullscreen') || sel.includes('a-hidden') || sel.includes('a-loader')) {
+                toDelete.push(i)
+              }
+            }
+            for (let i = toDelete.length - 1; i >= 0; i--) {
+              try { sheet.deleteRule(toDelete[i]) } catch (e) {}
+            }
+          } catch (e) {}
+        }
+      } catch (e) {}
     },
 
     loadScript(src) {
       return new Promise((resolve, reject) => {
         const exist = document.querySelector('script[src="' + src + '"]')
         if (exist) {
+          // 已标记为加载完成
           if (exist.dataset.loaded === '1') return resolve()
+          // 脚本正在加载中，等待事件
           exist.addEventListener('load', () => resolve())
           exist.addEventListener('error', () => reject(new Error('加载失败: ' + src)))
           return
@@ -363,7 +391,11 @@ export default {
         if (result.success) {
           uni.showToast({ title: '获得：' + (result.item?.name || '道具'), icon: 'success' })
           this.notifyPrevPage(result)
-          setTimeout(() => uni.navigateBack(), 1200)
+          setTimeout(() => {
+            this._active = false
+            this.destroyAR()
+            uni.navigateBack()
+          }, 1200)
         }
       } catch (e) {
         uni.showToast({ title: '收集失败', icon: 'none' })
@@ -408,8 +440,9 @@ export default {
   background: #000;
 }
 #__ar_scene_root__ a-scene {
-  position: absolute;
-  top: 0; left: 0;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
   width: 100% !important;
   height: 100% !important;
 }
